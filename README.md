@@ -1,4 +1,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Coverage Status](https://coveralls.io/repos/github/SimonAwiti/Questioner-APIs/badge.svg?branch=develop)](https://coveralls.io/github/SimonAwiti/Questioner-APIs?branch=develop)
+[![Build Status](https://travis-ci.org/SimonAwiti/Questioner-APIs.svg?branch=develop)](https://travis-ci.org/SimonAwiti/Questioner-APIs)
+
 
 # Questioner Application
 # Questioner application endpoints
@@ -40,6 +43,59 @@
 * clone the repo
 * From your terminal Ensure that the virtual environment is activated
 * From the terminal locate the repo and run: python run.py
+
+# How to get started
+
+Start by making a directory where we will work on. Simply Open your terminal and then:
+
+```
+mkdir Questioner-ADC
+```
+
+Afterwhich we go into the directory:
+
+```
+cd Questioner-ADC
+```
+
+## Create a Python Virtual Environment for our Project
+
+Since we are using Python 3, create a virtual environment by typing:
+
+```
+virtualenv -p python3 venv
+```
+
+Before we install our project's Python requirements, we need to activate the virtual environment. You can do that by typing:
+
+```
+source venv/bin/activate
+```
+
+## Clone and Configure a Flask Project
+
+Login into your github account and open the project folder then follow the instruction on how to clone the existing project. It should be something similar to:
+
+```
+git clone https://github.com/SimonAwiti/Questioner-APIs.git
+```
+
+Next, install the requirements by typing:
+
+```
+pip install -r requirements.txt
+```
+
+## How to run the app
+
+```
+flask run
+```
+
+## Unit Testing
+To test the endpoints ensure that the following tools are available the follow steps below
+   ### Tools:
+     Postman
 
 ## Technology used
 
