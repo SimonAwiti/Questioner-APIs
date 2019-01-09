@@ -4,8 +4,6 @@ import unittest
 import json
 from app import create_app
 
-from datetime import datetime
-
 class TestUsers(unittest.TestCase):
     """Class containing all tests for the users resource"""
     def setUp(self):
@@ -14,17 +12,11 @@ class TestUsers(unittest.TestCase):
         self.app.config['Testing'] = True
         self.client = self.app.test_client
         self.user = {
-            "id" : 1,
             "firstname":"Simon",
             "lastname":"Awiti",
-            "othername":"Antonny",
             "email":"simonawiti@gmail.com",
-            "phoneNumber" : "0792266400",
-            "username":"Simon",
-            "registered" : ["date"],
             "password":"pass123",
             "confirm":"pass123",
-            "isAdmin" : False
         }
 
         self.login = {
