@@ -1,5 +1,3 @@
-# Questioner-APIs
-
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Questioner Application
@@ -16,14 +14,13 @@
 ## Here is a list of the functioning endpoints
 
 | EndPoint                      | Functionality                    |  Actual routes                |
-| :---                          |     :---:                        |    :---:                      |
-| GET / Meetups/ <meetupid>              | Get a specific meetup  record       |  /api/v1 /meetups/<meetup-id>             |
-| GET /meetups/upcoming   | Fetch all meetup records     |  /api/v1/meetups     |
-
-| POST / meetups            | Create a meetup record            |  /api/v1/meetups/              |
-| POST / meetups            | Create a meetup record            |  /api/v1/meetups/              ||
-|POST /meetups/<meetup-id>/rsvps|Respond to meetup RSVP.    |  /api/v1/<meetupid>rspvs/              ||
-|PATCH /questions/<question-id>/upvote| Upvote a specific question|  /api/v1/questions/<questionid> /upvote            |
+| :---                          |     :---:                        |    :---:              |
+| GET / Meetups/ <meetupid>     | Get a specific meetup  record     |  /api/v1/meetups/<meetup-id>     |
+| GET /meetups/upcoming         | Fetch all meetup records         |  /api/v1/meetups            |
+| POST / meetups                | Create a meetup record           |  /api/v1/meetups/           |
+| POST / questions              | Create a question record         |  /api/v1/questions/         |
+|POST /meetups/<meetup-id>/rsvps|Respond to meetup RSVP.           |  /api/v1/<meetupid>rspvs/   |
+|PATCH /questions/<question-id>/upvote| Upvote a specific question| /api/v1/questions/<questionid> /upvote            |
 |PATCH /questions/<question-id>/downvote| Downvote a specific question|  /api/v1/questions/<questionid>/downvote             |
 | POST /users                   | User log in                      |  /api/v1/users/login          |
 | POST /users                   | User registration                |  /api/v1/users/register       |
