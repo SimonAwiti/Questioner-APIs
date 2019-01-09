@@ -8,7 +8,7 @@ coverage==4.5.2
 enum34==1.1.6
 Flask==1.0.2
 funcsigs==1.0.2
-futures==3.2.0
+#futures==3.2.0
 isort==4.3.4
 itsdangerous==1.1.0
 Jinja2==2.10
@@ -17,7 +17,7 @@ MarkupSafe==1.1.0
 mccabe==0.6.1
 more-itertools==5.0.0
 pathlib2==2.3.3
-pkg-resources==0.0.0
+#pkg-resources==0.0.0
 pluggy==0.8.0
 py==1.7.0
 pylint==1.9.4
