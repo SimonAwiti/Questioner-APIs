@@ -1,4 +1,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Coverage Status](https://coveralls.io/repos/github/SimonAwiti/Questioner-APIs/badge.svg?branch=develop)](https://coveralls.io/github/SimonAwiti/Questioner-APIs?branch=develop)
+[![Build Status](https://travis-ci.org/SimonAwiti/Questioner-APIs.svg?branch=develop)](https://travis-ci.org/SimonAwiti/Questioner-APIs)
+
 
 # Questioner Application
 # Questioner application endpoints
