@@ -26,12 +26,20 @@ class TestUsers(unittest.TestCase):
 
     def test_add_user(self):
         """Tests for adding a new user"""
-        response = self.client().post('/api/v1/users/register', data=json.dumps(self.user), content_type='application/json')
+        response = self.client().post(
+            '/api/v1/users/register', 
+            data=json.dumps(self.user), 
+            content_type='application/json'
+            )
         self.assertEqual(response.status_code, 201)
         self.assertIn("User succesfully Registered", str(response.data))
 
     def test_for_successful_login(self):
         """Tests if a user successfully logged in"""
-        response = self.client().post('/api/v1/users/login', data=json.dumps(self.login), content_type='application/json')
+        response = self.client().post(
+            '/api/v1/users/login', 
+            data=json.dumps(self.login), 
+            content_type='application/json'
+            )
         self.assertEqual(response.status_code, 200)
         self.assertIn("User succesfully Logged in", str(response.data))
