@@ -7,7 +7,7 @@ python:
 install:
   - pip install -r requirements.txt
 
-script: coverage run --source=app -m pytest && coverage report
+script: py.test --cov=app -v
 
 after_success: coveralls
 
