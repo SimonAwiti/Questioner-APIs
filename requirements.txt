@@ -19,6 +19,7 @@ Flask-Cors==3.0.7
 Flask-RESTful==0.3.7
 funcsigs==1.0.2
 #futures==3.2.0
+gunicorn==19.9.0
 idna==2.8
 ipaddress==1.0.22
 isort==4.3.4
@@ -37,6 +38,7 @@ pycparser==2.19
 pylint==1.9.4
 pyOpenSSL==18.0.0
 pytest==4.1.0
+pytest-cov==2.6.1
 python-dotenv==0.10.1
 pytz==2018.9
 requests==2.21.0
