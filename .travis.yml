@@ -7,10 +7,7 @@ python:
 install:
   - pip install -r requirements.txt
 
-script: py.test --cov=app -v
+script: coverage run --source=app -m pytest && coverage report
 
 after_success: coveralls
-
-notifications:
-  email: false
   
