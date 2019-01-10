@@ -37,7 +37,7 @@ class TestUsers(unittest.TestCase):
             content_type='application/json'
         )
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Meet record", str(response.data))
+        self.assertIn("Meetup record", str(response.data))
 
     def test_get_all_meetups(self):
         """Tests for getting all meetup records posted"""
