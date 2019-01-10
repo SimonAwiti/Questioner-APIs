@@ -14,10 +14,8 @@ class TestUsers(unittest.TestCase):
         self.app.config['Testing'] = True
         self.client = self.app.test_client
         self.meetup = {
-            "createdOn" : ["date"],
             "location" : "Andela main hall",
             "topic" : "Git work flow at its best",
-            "happeningOn" : ["date"],
             }
 
     def test_post_meetup(self):
@@ -33,7 +31,8 @@ class TestUsers(unittest.TestCase):
     def test_get_specific_meetup(self):
         """Test for getting a specific meetup record"""
         response = self.client().get(
-            '/api/vi/meetups/1',
+            '/api/v1/meetups/1',
+            data=json.dumps(self.meetup),
             content_type='application/json'
         )
         self.assertEqual(response.status_code, 200)
@@ -42,7 +41,8 @@ class TestUsers(unittest.TestCase):
     def test_get_all_meetups(self):
         """Tests for getting all meetup records posted"""
         response = self.client().get(
-            '/api/vi/meetups',
+            '/api/v1/meetups',
+            data=json.dumps(self.meetup),
             content_type='application/json'
         )
         self.assertEqual(response.status_code, 200)
