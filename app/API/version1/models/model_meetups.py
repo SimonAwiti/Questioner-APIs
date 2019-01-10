@@ -47,6 +47,20 @@ class Meetups():
         }
         # Append to the meetup list
         meetups.append(meetup_dict)
-        return {"msg": "Meetup successfully posted"}, 201
+        return {"msg": "Meetup succesfully posted"}, 201
 
+    def get_all_meetups(self):
+        """Fetch all meetup records from the meetup list"""
+        # If meetup list is empty
+        if len(meetups) == 0:
+            return {'msg':'No Meetups added yet'}, 404
+        return {'All scheduled meetups':meetups}, 200
+    
+    def get_one_meetup(self, meetup_id):
+        """Fetches a specific meetup from the meetup list"""
+        meetup = [meetup for meetup in meetups if meetup['id'] == meetup_id]
+        if meetup:
+            return {'Meetup record': meetup[0]}, 200
+        # no meetup found
+        return {'msg':'Meetup record with that ID not found'}, 404
         

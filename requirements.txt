@@ -1,3 +1,4 @@
+aniso8601==4.1.0
 asn1crypto==0.24.0
 astroid==1.6.5
 atomicwrites==1.2.1
@@ -14,6 +15,8 @@ cryptography==2.4.2
 docopt==0.6.2
 enum34==1.1.6
 Flask==1.0.2
+Flask-Cors==3.0.7
+Flask-RESTful==0.3.7
 funcsigs==1.0.2
 #futures==3.2.0
 idna==2.8
@@ -35,6 +38,7 @@ pylint==1.9.4
 pyOpenSSL==18.0.0
 pytest==4.1.0
 python-dotenv==0.10.1
+pytz==2018.9
 requests==2.21.0
 scandir==1.9.0
 singledispatch==3.4.0.3
