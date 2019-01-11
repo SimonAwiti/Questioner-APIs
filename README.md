@@ -9,7 +9,7 @@
 ## The following are API endpoints enabling one to: 
 * Create account and log in
 * Create a meetup record
-* Create a question
+* Create get single and all question
 * Get a specific meetup record
 * Get all meetup records
 * Upvote or downvote a question.
