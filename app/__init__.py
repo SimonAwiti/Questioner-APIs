@@ -30,6 +30,6 @@ def create_app(config_name):
 
     @app.route('/')
     def root():
-        return redirect('https://documenter.getpostman.com/view/4157501/RWgxvvVE')
+        return redirect('https://documenter.getpostman.com/view/5353857/RznHJxBh')
 
     return app
