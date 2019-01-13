@@ -3,6 +3,7 @@ from flask_restful import Resource, reqparse
 from flask import request
 
 from app.API.version1.models.modelfile import Meetups
+from app.API.utilities.validator import validate_meetups
 
 parser = reqparse.RequestParser(bundle_errors=True)
 parser.add_argument('location', help="You must specify the location of the meetup", required='True')
@@ -18,9 +19,12 @@ class NewMeetups(Resource):
     def post(self):
         """Route to handle creating meetup"""
         args = parser.parse_args()
-        return Meetups().add_meetup(
-            args['location'],
-            args['topic'])
+        response = validate_meetups(args)
+        if response == "valid":
+            return Meetups().add_meetup(
+                args['location'],
+                args['topic'])
+        return response
     
     def get(self):
         """Route to fetch all meetups"""
