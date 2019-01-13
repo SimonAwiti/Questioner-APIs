@@ -1,7 +1,8 @@
 # app/__init__.py
-
-from flask import Flask, redirect
+import os
+from flask import Flask, redirect, jsonify
 from flask_restful import Api
+from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 
 # local import
@@ -9,7 +10,7 @@ from instance.config import app_config
 from app.API.version1.views.views_meetup import NewMeetups, GetMeetup
 from app.API.version1.views.question_views import NewQuestion, GetQuestion, Upvote, Downvote
 from app.API.version1.views.rsvps_views import Rsvps
-
+from app.API.version1.users.views import NewUsers, LoginUser
 
 def create_app(config_name="development"):
     app = Flask(__name__, instance_relative_config=True)
@@ -28,7 +29,12 @@ def create_app(config_name="development"):
     api_endpoint.add_resource(Rsvps, '/api/v1/rsvps')
     api_endpoint.add_resource(Upvote, '/questions/<int:question_id>/upvote')
     api_endpoint.add_resource(Downvote, '/questions/<int:question_id>/downvote')
+    api_endpoint.add_resource(NewUsers, '/api/v1/users/auth/register')
+    api_endpoint.add_resource(LoginUser, '/api/v1/users/auth/login')
 
+    
+    app.config['JWT_SECRET_KEY'] = os.getenv("SECRET")
+    jwt = JWTManager(app)
     # Add CORS to handle Access-Control-Allow-Origin issues
     CORS(app)
 
