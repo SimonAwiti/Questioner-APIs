@@ -17,6 +17,16 @@ def check_if_meetup_exists(item):
         return True
     return False
 
+def check_if_question_exists(item):
+    """
+    Helper function to check if a question is already posted
+    """
+    meetup = [meetup for meetup in meetups if meetup['body'] == item.rstrip()]
+    if meetup:
+        return True
+    return False
+
+
 class Meetups():
     """Class to handle the meetup operations """
 
@@ -98,6 +108,10 @@ class Question():
         meetup = [meetup for meetup in meetups if meetup['meetup_id'] == meetup_id]
         if not meetup:
             return {'msg':'MeetuP to which you are posting a question to is NOT found'}, 404 
+
+        present = check_if_question_exists(body)
+        if present:
+            return {'msg':'There is a question with the similer content'}, 401
 
         questions.append(question_dict)
         return {"msg": "Question succesfully posted"}, 201
