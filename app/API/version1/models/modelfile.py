@@ -3,6 +3,7 @@
 from flask import request, jsonify
 from datetime import datetime, timedelta
 
+
 meetups = []
 rsvps = []
 questions = []
@@ -23,9 +24,6 @@ class Meetups():
         """Add a product to the products list"""
         location = request.json.get('location', None)
         topic = request.json.get('topic', None)
-
-        if location == '' or topic == '':
-            return {'error': 'Fields cannot be empty'}, 401 
 
         present = check_if_meetup_exists(topic)
         if present:
