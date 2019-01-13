@@ -116,3 +116,12 @@ class Question():
             return {'question record': question[0]}, 200
         return {'msg':'Question record with that ID not found'}, 404
    
+class Voting():
+    """Class to handle the votting operations """
+    
+    def upvote(self, question_id):
+        """Method to upvote a question"""
+        question = [question for question in questions if question['id'] == question_id]
+        if question:
+            question["votes"] += 1
+            return question
