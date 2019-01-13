@@ -7,7 +7,7 @@ from flask_cors import CORS
 # local import
 from instance.config import app_config
 from app.API.version1.views.views_meetup import NewMeetups, GetMeetup
-from app.API.version1.views.question_views import NewQuestion, GetQuestion, Upvote
+from app.API.version1.views.question_views import NewQuestion, GetQuestion, Upvote, Downvote
 from app.API.version1.views.rsvps_views import Rsvps
 
 
@@ -27,6 +27,7 @@ def create_app(config_name="development"):
     api_endpoint.add_resource(GetQuestion, '/api/v1/questions/<int:question_id>')
     api_endpoint.add_resource(Rsvps, '/api/v1/rsvps')
     api_endpoint.add_resource(Upvote, '/questions/<int:question_id>/upvote')
+    api_endpoint.add_resource(Downvote, '/questions/<int:question_id>/downvote')
 
     # Add CORS to handle Access-Control-Allow-Origin issues
     CORS(app)
