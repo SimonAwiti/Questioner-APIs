@@ -48,3 +48,13 @@ class Upvote(Resource):
     def patch(self, question_id):
         """Upvote question method"""
         return Question().upvote(question_id)
+
+class Downvote(Resource):
+    """
+    Class to handle votting for a question
+    PATCH questions/<question-id>/downvote -> votes for a question
+    """
+
+    def patch(self, question_id):
+        """Upvote question method"""
+        return Question().downvote(question_id)
