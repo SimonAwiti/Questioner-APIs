@@ -38,3 +38,13 @@ class GetQuestion(Resource):
     def get(self, question_id):
         """Route to fetch a specific question"""
         return Question().get_one_question(question_id)
+
+class Upvote(Resource):
+    """
+    Class to handle votting for a question
+    PATCH questions/<question-id>/upvote -> votes for a question
+    """
+
+    def patch(self, question_id):
+        """Upvote question method"""
+        return Question().upvote(question_id)
