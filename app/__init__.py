@@ -17,6 +17,24 @@ def create_app(config_name="development"):
     app.config.from_object(app_config[config_name])
     app.config.from_pyfile('config.py')
 
+    """Catch all 400 related errors""" 
+    @app.errorhandler(400)
+    def bad_request_error(error):
+        """400 error handler."""
+        return jsonify({"error": "A bad request was sent to the server."}), 400
+
+    """Catch all 404 errors"""
+    @app.errorhandler(404)
+    def not_found_error(error):
+        """404 error handler."""
+        return jsonify({"error": "Page not found, Check your URL and try again."}), 404
+
+    """Catch all 500 errors"""
+    @app.errorhandler(500)
+    def internal_server_error(error):
+        """500 error handler."""
+        return jsonify({"error": "Internal server error has occured."}), 500
+
 
     # Initialize flask_restful and add routes
     api_endpoint = Api(app)
@@ -43,3 +61,4 @@ def create_app(config_name="development"):
         return redirect('https://documenter.getpostman.com/view/5353857/RznHJxBh')
 
     return app
+    
