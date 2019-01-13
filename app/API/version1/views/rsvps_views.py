@@ -2,7 +2,7 @@
 from flask_restful import Resource, reqparse
 from flask import request
 
-from app.API.version1.models.model_meetups import Meetups
+from app.API.version1.models.modelfile import RsvpsResps
 
 parser = reqparse.RequestParser(bundle_errors=True)
 parser.add_argument('topic', help="You must specify the topic of your rsvp", required='True')
@@ -19,7 +19,7 @@ class Rsvps(Resource):
     def post(self):
         """Route to handle creating rsvp"""
         args = parser.parse_args()
-        return Meetups().create_rsvp(
+        return RsvpsResps().create_rsvp(
             args['topic'],
             args['status'],
             args['createdBy'],
@@ -27,6 +27,6 @@ class Rsvps(Resource):
     
     def get(self):
         """Route to fetch all RSVPS"""
-        return Meetups().get_all_rsvps()
+        return RsvpsResps().get_all_rsvps()
 
        
