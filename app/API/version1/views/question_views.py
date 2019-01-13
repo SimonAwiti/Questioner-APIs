@@ -3,6 +3,7 @@ from flask_restful import Resource, reqparse
 from flask import request
 
 from app.API.version1.models.modelfile import Question
+from app.API.utilities.validator import validate_questions
 
 parser = reqparse.RequestParser(bundle_errors=True)
 parser.add_argument('body', help="You must briiefly describe the question", required='True')
@@ -19,12 +20,15 @@ class NewQuestion(Resource):
     def post(self):
         """Route to handle creating a question"""
         args = parser.parse_args()
-        return Question().create_question(
-            args['body'],
-            args['title'],
-            args['meetup_id'],
-            args['createdBy']
-            )
+        response = validate_questions(args)
+        if response == "valid":
+            return Question().create_question(
+                args['body'],
+                args['title'],
+                args['meetup_id'],
+                args['createdBy']
+                )
+        return response
 
     def get(self):
         """Route to fetch all questions"""
