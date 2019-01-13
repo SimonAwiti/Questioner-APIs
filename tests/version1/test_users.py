@@ -20,7 +20,7 @@ class TestUsers(unittest.TestCase):
         }
 
         self.login = {
-            "email":"simon",
+            "email":"simonawiti@gmail.com",
             "password":"pass123"
         }
 
