@@ -2,8 +2,7 @@
 from flask_restful import Resource, reqparse
 from flask import request
 
-from app.API.version1.models.question_models import Question
-from app.API.version1.models.model_meetups import Meetups
+from app.API.version1.models.modelfile import Question
 
 parser = reqparse.RequestParser(bundle_errors=True)
 parser.add_argument('body', help="You must briiefly describe the question", required='True')
