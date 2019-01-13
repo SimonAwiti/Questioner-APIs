@@ -111,7 +111,7 @@ class Question():
 
         present = check_if_question_exists(body)
         if present:
-            return {'msg':'There is a question with the similer content'}, 401
+            return {'msg':'There is a question with the similer content posted'}, 401
 
         questions.append(question_dict)
         return {"msg": "Question succesfully posted"}, 201
