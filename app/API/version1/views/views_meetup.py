@@ -2,7 +2,7 @@
 from flask_restful import Resource, reqparse
 from flask import request
 
-from app.API.version1.models.model_meetups import Meetups
+from app.API.version1.models.modelfile import Meetups
 
 parser = reqparse.RequestParser(bundle_errors=True)
 parser.add_argument('location', help="You must specify the location of the meetup", required='True')
@@ -11,7 +11,7 @@ parser.add_argument('topic', help="You must specify the topic of your meetup", r
 
 class NewMeetups(Resource):
     """
-    Class to handle adding and fetching all and specific meetups
+    Class to handle adding and fetching all meetups
     POST /api/v1/meetups -> Creates a new meetup
     GET /api/v1/meetups -> Gets all meetups
     """
