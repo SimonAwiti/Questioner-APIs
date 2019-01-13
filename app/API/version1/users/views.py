@@ -3,6 +3,7 @@ from flask_restful import Resource, reqparse
 from flask import request
 
 from app.API.version1.users.models import Users
+from app.API.version1.users.validators import validate_data_signup
 
 parser = reqparse.RequestParser(bundle_errors=True)
 parser.add_argument('firstname', help="You must supply your first name", required='True')
@@ -19,12 +20,15 @@ class NewUsers(Resource):
     def post(self):
         """Route to handle creating users"""
         args = parser.parse_args()
-        return Users().add_user(
-            args['firstname'],
-            args['lastname'],
-            args['email'],
-            args['password'],
-            args['confirm'])
+        response = validate_data_signup(args)
+        if response == "valid":
+            return Users().add_user(
+                args['firstname'],
+                args['lastname'],
+                args['email'],
+                args['password'],
+                args['confirm'])
+        return response
 
 class LoginUser(Resource):
     """
