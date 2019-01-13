@@ -10,7 +10,6 @@ questions = []
 def check_if_meetup_exists(item):
     """
     Helper function to check if a meetup record already exists
-    Returns True if meetup record already exists, else returns False
     """
     meetup = [meetup for meetup in meetups if meetup['topic'] == item.rstrip()]
     if meetup:
