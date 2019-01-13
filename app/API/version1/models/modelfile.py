@@ -10,7 +10,6 @@ questions = []
 def check_if_meetup_exists(item):
     """
     Helper function to check if a meetup record already exists
-    Returns True if meetup record already exists, else returns False
     """
     meetup = [meetup for meetup in meetups if meetup['topic'] == item.rstrip()]
     if meetup:
@@ -115,4 +114,20 @@ class Question():
         if question:
             return {'question record': question[0]}, 200
         return {'msg':'Question record with that ID not found'}, 404
+
+    def upvote(self, question_id):
+        """Method to upvote a question"""
+        question = [question for question in questions if question['id'] == question_id]
+        if question:
+            question[0]["votes"] += 1
+            return {'Succesful upvote': question[0]}, 200
+        return {'msg':'Question record with that ID not found'}, 404
    
+    def downvote(self, question_id):
+        """Method to downvote a question"""
+        question = [question for question in questions if question['id'] == question_id]
+        if question:
+            question[0]["votes"] -= 1
+            return {'Succesful downvote': question[0]}, 200
+        return {'msg':'Question record with that ID not found'}, 404
+        
