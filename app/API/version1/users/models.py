@@ -74,5 +74,4 @@ class Users():
         user = [user for user in users if user['email'] == email.rstrip()]
         access_token = create_access_token(identity={'email':user[0]['email'], 'user_id':user[0]['user_id'], 'admin':user[0]['admin']})
 
-        return {{"msg":"User succesfully Logged in"}, access_token}, 200
-        
+        return [{"msg":"User succesfully Logged in"}, access_token], 200
