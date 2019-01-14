@@ -8,26 +8,42 @@ meetups = []
 rsvps = []
 questions = []
 
-def check_if_meetup_exists(item):
-    """
-    Helper function to check if a meetup record already exists
-    """
-    meetup = [meetup for meetup in meetups if meetup['topic'] == item.rstrip()]
-    if meetup:
-        return True
-    return False
+class Helper():
+    """Carries out common functions"""
+    def meetups(self, meetup_id):
+        ismeetup = [meetup for meetup in meetups if meetup["meetup_id"] == meetup_id]
+        if ismeetup:
+            return True
+        False
 
-def check_if_question_exists(item):
-    """
-    Helper function to check if a question is already posted
-    """
-    meetup = [meetup for meetup in meetups if meetup['body'] == item.rstrip()]
-    if meetup:
-        return True
-    return False
+    def check_if_meetup_exists(self, topic):
+        """
+        Helper function to check if a meetup record already exists
+        """
+        meetup = [meetup for meetup in meetups if meetup['topic'] == topic]
+        if meetup:
+            return True
+        return False
 
+    def check_if_question_exists(self, title):
+        """
+        Helper function to check if a question is already posted
+        """
+        meetup = [meetup for meetup in questions if meetup['title'] == title]
+        if meetup:
+            return True
+        return False
 
-class Meetups():
+    def check_if_quiz_id_exists(self, question_id):
+        """
+        Helper function to check if a question id is valid
+        """
+        question = [question for question in questions if question["question_id"] == question_id]
+        if question:
+            return True
+        return False
+
+class Meetups(Helper):
     """Class to handle the meetup operations """
 
     def add_meetup(self, location, topic):
@@ -35,7 +51,7 @@ class Meetups():
         location = request.json.get('location', None)
         topic = request.json.get('topic', None)
 
-        present = check_if_meetup_exists(topic)
+        present = Helper.check_if_meetup_exists(self, topic)
         if present:
             return {'msg':'There is a meetup with the same topic'}, 401
         
@@ -55,12 +71,12 @@ class Meetups():
     
     def get_one_meetup(self, meetup_id):
         """Fetches a specific meetup from the meetup list"""
-        meetup = [meetup for meetup in meetups if meetup['meetup_id'] == meetup_id]
+        meetup = Helper.meetups(self, meetup_id)
         if meetup:
-            return {'Meetup record': meetup[0]}, 200
+            return {'Meetup record': meetup}, 200
         return {'msg':'Meetup record with that ID not found'}, 404
 
-class RsvpsResps():
+class RsvpsResps(Helper):
     """Class to handle the rsvps operation """        
     def create_rsvp(self, topic, status, createdBy, meetup_id):
         """Method to save rspv records"""
@@ -69,7 +85,7 @@ class RsvpsResps():
         createdBy = request.json.get('createdBy', None)
         meetup_id = request.json.get('meetup_id', None)
 
-        meetup = [meetup for meetup in meetups if meetup['meetup_id'] == meetup_id]
+        meetup = Helper.meetups(self, meetup_id)
         if not meetup:
             return {'msg':'MeetuP to which you are posting an RSVP is NOT found'}, 404      
         rsvp_dict={
@@ -87,7 +103,7 @@ class RsvpsResps():
         """Fetch all rsvps from the rsvp list"""
         return {'All posted RSVPS':rsvps}, 200
 
-class Question():
+class Question(Helper):
     """Class to handle the question operation """
     def create_question(self, body, title, meetup_id, createdBy):
         """Method to save question records"""
@@ -105,11 +121,11 @@ class Question():
             "meetup_id": meetup_id,
             "createdBy": createdBy
         }
-        meetup = [meetup for meetup in meetups if meetup['meetup_id'] == meetup_id]
+        meetup = Helper.meetups(self, meetup_id)
         if not meetup:
             return {'msg':'MeetuP to which you are posting a question to is NOT found'}, 404 
 
-        present = check_if_question_exists(body)
+        present = Helper.check_if_question_exists(self, title)
         if present:
             return {'msg':'There is a question with the similer content posted'}, 401
 
@@ -122,14 +138,14 @@ class Question():
     
     def get_one_question(self, question_id):
         """Fetches a specific question from the questions list"""
-        question = [question for question in questions if question['id'] == question_id]
+        question = Helper.check_if_quiz_id_exists(self, question_id)
         if question:
-            return {'question record': question[0]}, 200
+            return {'question record': question}, 200
         return {'msg':'Question record with that ID not found'}, 404
 
     def upvote(self, question_id):
         """Method to upvote a question"""
-        question = [question for question in questions if question['id'] == question_id]
+        question = Helper.check_if_quiz_id_exists(self, question_id)
         if question:
             question[0]["votes"] += 1
             return {'Succesful upvote': question[0]}, 200
@@ -137,7 +153,7 @@ class Question():
    
     def downvote(self, question_id):
         """Method to downvote a question"""
-        question = [question for question in questions if question['id'] == question_id]
+        question = Helper.check_if_quiz_id_exists(self, question_id)
         if question:
             question[0]["votes"] -= 1
             return {'Succesful downvote': question[0]}, 200
