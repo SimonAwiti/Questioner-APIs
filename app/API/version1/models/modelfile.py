@@ -27,7 +27,7 @@ class Helper():
 
     def check_if_question_exists(self, title):
         """
-        Helper function to check if a question is already posted
+        Helper function to check if same question is already posted
         """
         meetup = [meetup for meetup in questions if meetup['title'] == title]
         if meetup:
