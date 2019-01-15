@@ -2,7 +2,6 @@
 import os
 from flask import Flask, redirect, jsonify
 from flask_restful import Api
-from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 
 # local import
@@ -50,9 +49,6 @@ def create_app(config_name="development"):
     api_endpoint.add_resource(NewUsers, '/api/v1/users/auth/register')
     api_endpoint.add_resource(LoginUser, '/api/v1/users/auth/login')
 
-    
-    app.config['JWT_SECRET_KEY'] = os.getenv("SECRET")
-    jwt = JWTManager(app)
     # Add CORS to handle Access-Control-Allow-Origin issues
     CORS(app)
 
