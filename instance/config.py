@@ -9,6 +9,7 @@ class Config(object):
 class DevelopmentConfig(Config):
     """Configurations for Development."""
     DEBUG = True
+    SECRET = os.getenv('SECRET')
 
 
 class TestingConfig(Config):
