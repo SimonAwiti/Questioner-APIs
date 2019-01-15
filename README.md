@@ -2,6 +2,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/SimonAwiti/Questioner-APIs/badge.svg?branch=develop)](https://coveralls.io/github/SimonAwiti/Questioner-APIs?branch=develop)
 [![Build Status](https://travis-ci.org/SimonAwiti/Questioner-APIs.svg?branch=develop)](https://travis-ci.org/SimonAwiti/Questioner-APIs)
 [![Maintainability](https://api.codeclimate.com/v1/badges/b661f5121ff42ce67210/maintainability)](https://codeclimate.com/github/SimonAwiti/Questioner-APIs/maintainability)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6f724a002c364f729b23d069afbbe6eb)](https://www.codacy.com/app/SimonAwiti/Questioner-APIs?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SimonAwiti/Questioner-APIs&amp;utm_campaign=Badge_Grade)
 
 
 # Questioner Application
