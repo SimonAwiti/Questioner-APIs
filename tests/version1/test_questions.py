@@ -20,6 +20,10 @@ class TestQuestion(unittest.TestCase):
             "location" : "Andela main hall",
             "topic" : "GIT",
             }
+        self.meetup3 = {
+            "location" : "Andela main hall",
+            "topic" : "Streaming",
+            }
         self.question = {
             "body" : "what is the best way of sorting merge conflict",
             "title" : "markup",
@@ -134,3 +138,24 @@ class TestQuestion(unittest.TestCase):
         self.assertEqual(response.status_code, 401)
         self.assertIn("The field should be an integer", str(response.data))
 
+    def test_post_a_question_with_same_content(self):
+        """Tests for posting a new question record with same content"""
+        response = self.client.post('/api/v1/meetups',
+                                    data=json.dumps(self.meetup3),
+                                    content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+        self.assertIn("Meetup succesfully posted", str(response.data))
+
+        response1 = self.client.post('/api/v1/questions',
+                                    data=json.dumps(self.question6),
+                                    content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+        self.assertIn("There is a question with the similer content posted", str(response1.data))
+
+    def test_get_one_question_not_found(self):
+        """Test for getting one questions"""
+        response = self.client.get('/api/v1/questions/10',
+                                    data=json.dumps(self.question2),
+                                    content_type='application/json')
+        self.assertEqual(response.status_code, 404)
+        self.assertIn("Question record with that ID not found", str(response.data))
