@@ -50,13 +50,13 @@
 Start by making a directory where we will work on. Simply Open your terminal and then:
 
 ```
-mkdir Questioner-ADC
+mkdir Questioner-APIs
 ```
 
 Afterwhich we go into the directory:
 
 ```
-cd Questioner-ADC
+cd Questioner-APIs
 ```
 
 ## Create a Python Virtual Environment for our Project
