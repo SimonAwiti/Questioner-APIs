@@ -2,10 +2,10 @@
 users_table = """CREATE TABLE IF NOT EXISTS users
             (
                 user_id serial PRIMARY KEY, 
-                firstname NOT NULL,
-                lastname NOT NULL,
-                email UNIQUE NOT NULL,
-                password NOT NULL,
+                firstname VARCHAR (50) UNIQUE NOT NULL,
+                lastname VARCHAR (50) UNIQUE NOT NULL,
+                email VARCHAR (50) UNIQUE NOT NULL,
+                password VARCHAR (50) UNIQUE NOT NULL,
                 admin BOOLEAN NOT NULL
         )"""
 
@@ -13,8 +13,8 @@ meetups_table = """ CREATE TABLE IF NOT EXISTS meetups
             (
                 meetup_id SERIAL PRIMARY KEY,
                 createdOn DATE,
-                location NOT NULL,
-                topic NOT NULL,
+                location VARCHAR (50) UNIQUE NOT NULL,
+                topic VARCHAR (50) UNIQUE NOT NULL,
                 happeningOn DATE,
                 user_id INT REFERENCES users(user_id) ON DELETE CASCADE
         )"""
@@ -25,10 +25,10 @@ questions_table = """ CREATE TABLE IF NOT EXISTS questions
                 createdOn DATE,  
                 createdBy INT REFERENCES users(user_id) ON DELETE CASCADE,
                 meetup_id INT REFERENCES meetups(meetup_id) ON DELETE CASCADE, 
-                title NOT NULL UNIQUE,
-                body NOT NULL,
+                title VARCHAR (50) UNIQUE NOT NULL,
+                body VARCHAR (70) UNIQUE NOT NULL,
                 votes INTEGER NOT NULL,
-                comment NOT NULL
+                comment VARCHAR (50) UNIQUE NOT NULL
         )"""
 
 queries = [users_table, meetups_table, questions_table]
