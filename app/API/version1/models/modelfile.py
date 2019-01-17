@@ -148,7 +148,7 @@ class Question(Helper):
             "createdOn" : str(datetime.now()),
             "body": body,
             "title": title,
-            "votes": 1,
+            "votes": 0,
             "meetup_id": meetup_id,
             "createdBy": createdBy
         }
