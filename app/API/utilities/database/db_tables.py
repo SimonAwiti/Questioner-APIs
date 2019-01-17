@@ -27,11 +27,18 @@ questions_table = """ CREATE TABLE IF NOT EXISTS questions
                 meetup_id INT REFERENCES meetups(meetup_id) ON DELETE CASCADE, 
                 title VARCHAR (50) UNIQUE NOT NULL,
                 body VARCHAR (70) UNIQUE NOT NULL,
-                votes INTEGER NOT NULL,
+                votes INTEGER NOT NULL
+        )"""
+
+comments_table = """ CREATE TABLE IF NOT EXISTS comments 
+           (
+                comment_id serial PRIMARY KEY,
+                question_id INT REFERENCES users(user_id) ON DELETE CASCADE,
+                title VARCHAR (50) UNIQUE NOT NULL,
                 comment VARCHAR (50) UNIQUE NOT NULL
         )"""
 
-queries = [users_table, meetups_table, questions_table]
+queries = [users_table, meetups_table, questions_table, comments_table]
 
 droppings = [
                 "DROP TABLE users CASCADE",
