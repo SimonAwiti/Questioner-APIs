@@ -14,35 +14,39 @@ class TestRspv(unittest.TestCase):
             "location" : "Andela main hall",
             "topic" : "HTMLSCC",
             }
+        self.meetup2 = {
+            "location" : "Andela",
+            "topic" : "MEETIINGS",
+            }
         self.rsvp = {
-            "topic" : "html/css",
-            "status" : "Yes",
-            "createdBy" : "simon",
-            "meetup_id" : 1,
+            "response" : "Yes",
+            "user_id" : 3,
+            "meetup_id" : 4,
         }
         self.rsvp2 = {
-            "topic" : "Clonin",
-            "status" : "Yes",
-            "createdBy" : "joseph",
+            "response" : "Yes",
+            "user_id" : 3,
             "meetup_id" : 30,
         }
         self.rsvp3 = {
-            "topic" : "",
-            "status" : "",
-            "createdBy" : "",
+            "response" : "",
+            "user_id" : "",
             "meetup_id" : "",
         }
         self.rsvp4 = {
-            "topic" : "33",
-            "status" : "11",
-            "createdBy" : "56",
+            "response" : "11",
+            "user_id" : 2,
             "meetup_id" : 30,
         }
         self.rsvp5 = {
-            "topic" : "Clonin",
-            "status" : "Yes",
-            "createdBy" : "joseph",
+            "response" : "Yes",
+            "user_id" : "joseph",
             "meetup_id" : "one",
+        }
+        self.rsvp6 = {
+            "response" : "Yes",
+            "user_id" : 2,
+            "meetup_id" : 2,
         }
     def test_post_a_rspv(self):
         """Test if the post rsvp"""
@@ -57,11 +61,20 @@ class TestRspv(unittest.TestCase):
         self.assertEqual(response.status_code, 201)
         self.assertIn("RSVP succesfully posted", str(response.data))
 
-    def test_get_all_rsvp(self):
-        """Test for getting a specific rsvp record"""
-        response = self.client.get('/api/v1/rsvps',
-                                    data=json.dumps(self.rsvp),
+    def test_get_rsvp_for_meeting(self):
+        """Test for getting one meeting rsvp"""
+        response = self.client.post('/api/v1/meetups',
+                                    data=json.dumps(self.meetup2),
                                     content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+        self.assertIn("Meetup succesfully posted", str(response.data))
+        response1 = self.client.post('/api/v1/rsvps',
+                                    data=json.dumps(self.rsvp6),
+                                    content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+        self.assertIn("RSVP succesfully posted", str(response1.data))
+        response = self.client.get('/api/v1/rsvps/2',
+                                  content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertIn("All posted RSVPS", str(response.data))
 
@@ -95,4 +108,4 @@ class TestRspv(unittest.TestCase):
                                     data=json.dumps(self.rsvp5),
                                     content_type='application/json')
         self.assertEqual(response.status_code, 401)
-        self.assertIn("The field should be an integer", str(response.data))
+        self.assertIn("The fields requiring id should be integers", str(response.data))
