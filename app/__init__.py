@@ -12,7 +12,7 @@ from app.API.version1.views.rsvps_views import Rsvps, GetMeetupRsvp
 from app.API.version1.users.views import NewUsers, LoginUser
 from app.API.utilities.database.connection import initializedb
 
-def create_app(config_name="development"):
+def create_app(config_name):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(app_config[config_name])
     app.config.from_pyfile('config.py')
