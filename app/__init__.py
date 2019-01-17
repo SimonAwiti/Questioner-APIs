@@ -10,6 +10,7 @@ from app.API.version1.views.views_meetup import NewMeetups, GetMeetup
 from app.API.version1.views.question_views import NewQuestion, GetQuestion, Upvote, Downvote
 from app.API.version1.views.rsvps_views import Rsvps, GetMeetupRsvp
 from app.API.version1.users.views import NewUsers, LoginUser
+from app.API.utilities.database.connection import initializedb
 
 def create_app(config_name="development"):
     app = Flask(__name__, instance_relative_config=True)
@@ -52,6 +53,8 @@ def create_app(config_name="development"):
 
     # Add CORS to handle Access-Control-Allow-Origin issues
     CORS(app)
+
+    initializedb()
 
     @app.route('/')
     def root():
