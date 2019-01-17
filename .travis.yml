@@ -4,6 +4,17 @@ python:
 
   - "3.6"
 
+services:
+  - postgresql
+
+install: 
+  - pip install -r requirements.txt
+  - pip install coveralls
+
+before_script:
+  - psql -c "CREATE DATABASE questionerdb;" -U questioner
+  - psql -c "CREATE DATABASE testdb;" -U questioner
+
 install:
   - pip install -r requirements.txt
 
