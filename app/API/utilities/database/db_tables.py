@@ -6,7 +6,6 @@ users_table = """CREATE TABLE IF NOT EXISTS users
                 lastname VARCHAR (50) UNIQUE NOT NULL,
                 email VARCHAR (50) UNIQUE NOT NULL,
                 password VARCHAR (50) UNIQUE NOT NULL,
-                confirm VARCHAR (50) UNIQUE NOT NULL,
                 admin BOOLEAN NOT NULL
         )"""
 
