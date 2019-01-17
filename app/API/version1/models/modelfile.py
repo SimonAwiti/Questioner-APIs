@@ -44,6 +44,24 @@ class Helper():
             return question
         return False
 
+    def check_if_rsvp_exists(self, meetup_id):
+        """
+        Helper function to check if an rsvp exists
+        """
+        rsvp = [rsvp for rsvp in rsvps if rsvp["meetup_id"] == meetup_id]
+        if rsvp:
+            return rsvp
+        return False
+
+    def check_if_rsvp_duplication(self, meetup_id, user_id):
+        """
+        Helper function to check if an rsvp exists
+        """
+        rsvp = [rsvp for rsvp in rsvps if rsvp["meetup_id"] == meetup_id and rsvp["user_id"] == user_id]
+        if rsvp:
+            return rsvp
+        return False
+
 class Meetups(Helper):
     """Class to handle the meetup operations """
 
@@ -98,11 +116,10 @@ class Meetups(Helper):
 
 class RsvpsResps(Helper):
     """Class to handle the rsvps operation """        
-    def create_rsvp(self, topic, status, createdBy, meetup_id):
+    def create_rsvp(self, response, user_id, meetup_id):
         """Method to save rspv records"""
-        topic = request.json.get('topic', None)
-        status = request.json.get('status', None)
-        createdBy = request.json.get('createdBy', None)
+        response = request.json.get('response', None)
+        user_id = request.json.get('user_id', None)
         meetup_id = request.json.get('meetup_id', None)
 
         meetup = Helper.meetups(self, meetup_id)
@@ -111,12 +128,18 @@ class RsvpsResps(Helper):
                 "status": 404,
                 "error": "MeetuP to which you are posting an RSVP is NOT found"
                 }, 404
+
+        duplicate = Helper.check_if_rsvp_duplication(self, meetup_id, user_id)
+        if duplicate:
+            return{
+                "status": 401,
+                "error": "You have already posted an rsvp to that meetup"
+                }, 401
      
         rsvp_dict={
             "rsvp_id": len(rsvps) + 1,
-            "topic" : topic,
-            "status" : status,
-            "createdBy" : createdBy,
+            "response" : response,
+            "user_id" : user_id,
             "meetup_id" : meetup_id
             }
         rsvps.append(rsvp_dict)
@@ -126,8 +149,15 @@ class RsvpsResps(Helper):
             "Message": "RSVP succesfully posted"
         }, 201
 
-    def get_all_rsvps(self):
+    def get_meetup_rsvps(self, meetup_id):
         """Fetch all rsvps from the rsvp list"""
+        meetup = Helper.check_if_rsvp_exists(self, meetup_id)
+        if not meetup:
+            return{
+                "status": 404,
+                "error": "No rsvp for that meetup yet"
+                }, 404
+
         return {
             "status": 200,
             "data": rsvps,
