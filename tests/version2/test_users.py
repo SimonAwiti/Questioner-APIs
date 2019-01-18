@@ -43,7 +43,7 @@ class UserTestCase(unittest.TestCase):
         self.assertIn('User Successfully logged in', str(response.data))
 
     def test_user_register(self):
-        """Test to successfuly register a new user"""
+        """Test to successfuly register a new user reg"""
         response = self.client().post('/api/v2/auth/signup',
                                       data=json.dumps(self.user2),
                                       content_type='application/json')
