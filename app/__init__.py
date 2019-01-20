@@ -10,17 +10,15 @@ from app.API.version1.views.views_meetup import NewMeetups, GetMeetup
 from app.API.version1.views.question_views import NewQuestion, GetQuestion, Upvote, Downvote
 from app.API.version1.views.rsvps_views import Rsvps, GetMeetupRsvp
 from app.API.version1.users.views import NewUsers, LoginUser
-from app.API.utilities.database import connection
+from app.API.utilities.database.connection import initializedb
+from app.API.version2.users.views import RegisterUsers, LoginUsers
 
 def create_app(config_name):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(app_config[config_name])
     app.config.from_pyfile('config.py')
 
-    with app.app_context():
-        connection.dbconnection()
-        connection.initializedb()
-        connection.generate_admin()
+
 
     """Catch all 400 related errors""" 
     @app.errorhandler(400)
@@ -56,9 +54,14 @@ def create_app(config_name):
     api_endpoint.add_resource(NewUsers, '/api/v1/users/auth/register')
     api_endpoint.add_resource(LoginUser, '/api/v1/users/auth/login')
 
+    #version2 imports
+    api_endpoint.add_resource(RegisterUsers, '/api/v2/users/auth/register')
+    api_endpoint.add_resource(LoginUsers, '/api/v2/users/auth/login')
+
     # Add CORS to handle Access-Control-Allow-Origin issues
     CORS(app)
 
+    initializedb()
 
     @app.route('/')
     def root():

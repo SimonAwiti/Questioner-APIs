@@ -22,23 +22,21 @@ def initializedb():
             cursor.execute(query)
         connection.commit()
 
+        """Generate the default admin and add to db"""
+        gen_admin = """
+                INSERT INTO
+                users (firstname, lastname, email, password, confirm, admin)
+                VALUES ('main', 'admin', 'admin12@gmail.com', 'passadmin', 'passadmin', true)
+                ON CONFLICT (lastname) DO NOTHING
+                """
+        connection = dbconnection()
+        cursor = connection.cursor()
+        cursor.execute(gen_admin)
+        connection.commit()
+
     except (Exception, psycopg2.DatabaseError) as error:
         print("DB Error")
         print(error)
-
-def generate_admin():
-    """Generate the default admin and add to db"""
-    gen_admin = """
-                INSERT INTO
-                users (firstname, lastname, email, password, admin)
-                VALUES ('main', 'admin', 'admin12@gmail.com', 'passadmin', true)
-                ON CONFLICT (lastname) DO NOTHING
-                """
-    connection = dbconnection()
-    cursor = connection.cursor()
-    cursor.execute(gen_admin)
-    connection.commit()
-
 
 def drop_tables():
     """Drops all tables"""
@@ -46,4 +44,4 @@ def drop_tables():
     cursor = connection.cursor()
     for drop in droppings:
         cursor.execute(drop)
-        connection.commit()
+    connection.commit()

@@ -6,6 +6,7 @@ users_table = """CREATE TABLE IF NOT EXISTS users
                 lastname VARCHAR (50) UNIQUE NOT NULL,
                 email VARCHAR (50) UNIQUE NOT NULL,
                 password VARCHAR (50) UNIQUE NOT NULL,
+                confirm VARCHAR (50) UNIQUE NOT NULL,
                 admin BOOLEAN NOT NULL
         )"""
 
@@ -43,5 +44,6 @@ queries = [users_table, meetups_table, questions_table, comments_table]
 droppings = [
                 "DROP TABLE users CASCADE",
                 "DROP TABLE meetups CASCADE",
-                "DROP TABLE questions CASCADE"
+                "DROP TABLE questions CASCADE",
+                "DROP TABLE comments CASCADE"
             ]
