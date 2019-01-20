@@ -92,7 +92,7 @@ class Users(Helper):
         if email == '' or password == '':
             return{
                 "status": 401,
-                "error": "Neither of the fields can be left empty"
+                "error": "Neither of the fields can be left empty during log in"
                 }, 401
 
         try:
@@ -116,4 +116,3 @@ class Users(Helper):
             response = jsonify({'msg':'Problem fetching record from the database'})
             response.status_code = 400
             return response
-            
