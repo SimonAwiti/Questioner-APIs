@@ -43,5 +43,6 @@ queries = [users_table, meetups_table, questions_table, comments_table]
 droppings = [
                 "DROP TABLE users CASCADE",
                 "DROP TABLE meetups CASCADE",
-                "DROP TABLE questions CASCADE"
+                "DROP TABLE questions CASCADE",
+                "DROP TABLE comments CASCADE"
             ]
