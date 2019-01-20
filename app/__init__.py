@@ -11,6 +11,7 @@ from app.API.version1.views.question_views import NewQuestion, GetQuestion, Upvo
 from app.API.version1.views.rsvps_views import Rsvps, GetMeetupRsvp
 from app.API.version1.users.views import NewUsers, LoginUser
 from app.API.utilities.database.connection import initializedb
+from app.API.version2.users.views import RegisterUsers, LoginUsers
 
 def create_app(config_name):
     app = Flask(__name__, instance_relative_config=True)
@@ -52,6 +53,10 @@ def create_app(config_name):
     api_endpoint.add_resource(Downvote, '/questions/<int:question_id>/downvote')
     api_endpoint.add_resource(NewUsers, '/api/v1/users/auth/register')
     api_endpoint.add_resource(LoginUser, '/api/v1/users/auth/login')
+
+    #version2 imports
+    api_endpoint.add_resource(RegisterUsers, '/api/v2/users/auth/register')
+    api_endpoint.add_resource(LoginUsers, '/api/v2/users/auth/login')
 
     # Add CORS to handle Access-Control-Allow-Origin issues
     CORS(app)
