@@ -13,7 +13,7 @@ users_table = """CREATE TABLE IF NOT EXISTS users
 meetups_table = """ CREATE TABLE IF NOT EXISTS meetups 
             (
                 meetup_id SERIAL PRIMARY KEY,
-                createdOn DATE,
+                createdOn TIMESTAMP,
                 location VARCHAR (50) UNIQUE NOT NULL,
                 topic VARCHAR (50) UNIQUE NOT NULL,
                 happeningOn DATE,
