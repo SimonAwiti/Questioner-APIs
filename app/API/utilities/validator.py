@@ -31,14 +31,12 @@ def validate_questions(args):
     try:
         if args["body"] == '' or \
            args["title"] == '' or \
-           args["meetup_id"] == '' or \
-           args["createdBy"] == '':
+           args["meetup_id"] == '' :
             return {'error': 'Fields cannot be left empty'}, 401
         elif(args["body"]. isdigit()) or \
             (args["title"]. isdigit()):
                 return {"error":"The fields should be described in words"},401
-        elif(args["meetup_id"]. isalpha()) or \
-            (args["createdBy"]. isalpha()):
+        elif(args["meetup_id"]. isalpha()):
             return {"error":"The field should be an integer"},401
         else:
             return "valid"
