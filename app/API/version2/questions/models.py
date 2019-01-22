@@ -15,15 +15,15 @@ class Questions(Helper):
         if not present:
                         return{
                                 "status": 404,
-                                "error": "Meetup ID to which you are posting on does not exist"
+                                "error": "Meetup ID to which you are posting on does is not found"
                             }, 404
 
         duplicate_question = Helper.check_if_similar_question_exists(self, title)
         if duplicate_question:
                         return{
-                                "status": 401,
-                                "error": "There is a question with the same conted already posted"
-                            }, 401
+                                "status": 403,
+                                "error": "There is a question with the same content already posted"
+                            }, 403
         data = {
             "body":body,
             "title":  title,
@@ -63,7 +63,7 @@ class Questions(Helper):
         return make_response(jsonify({
                 "status": 200,
                 "msg": "All posted questions",
-                "data": questions
+                "data": [questions]
                 }))
 
     def get_one_question(self, question_id):
