@@ -64,7 +64,7 @@ class Helper():
                 "error": "An internal error occured"
                 }, 500
 
-    def check_if_question_exists(self, question_id):
+    def check_if_question_exists(self, question_id=None):
         """
         Helper function to check if a question exists
         Returns a true if a question already exists
@@ -78,6 +78,19 @@ class Helper():
             return question
         return False
 
+    def check_if_question_posted_exists(self, question_id):
+        """
+        Helper function to check if a question exists
+        Returns a true if a question already exists
+        """
+        connect = connection.dbconnection()
+        cursor = connect.cursor()
+        cursor.execute("SELECT * FROM questions WHERE question_id=%(question_id)s",\
+            {"question_id":question_id})
+        question = cursor.fetchall()
+        if question:
+            return question
+        return False
             
 class Meetups(Helper):
     """Class to handle meetups"""
@@ -87,9 +100,9 @@ class Meetups(Helper):
         present = Helper.check_if_meetup_exists(self, topic)
         if present:
             return{
-                "status": 401,
+                "status": 409,
                 "error": "There is a meetup with a similer topic"
-                }, 401
+                }, 409
 
         data = {
             "location":  location,

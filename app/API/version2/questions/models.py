@@ -6,7 +6,9 @@ from datetime import datetime, timedelta
 
 from app.API.utilities.database import connection
 from app.API.version2.meetups.models import Helper
-            
+
+
+
 class Questions(Helper):
     """Class to handle questions"""
     def create_question(self, body, title, meetup_id, createdBy):
@@ -21,9 +23,9 @@ class Questions(Helper):
         duplicate_question = Helper.check_if_similar_question_exists(self, title)
         if duplicate_question:
                         return{
-                                "status": 403,
+                                "status": 409,
                                 "error": "There is a question with the same content already posted"
-                            }, 403
+                            }, 409
         data = {
             "body":body,
             "title":  title,
@@ -54,6 +56,8 @@ class Questions(Helper):
             response.status_code = 500
             return response
 
+
+
     def get_all_questions(self):
         """Method to get all questions"""
         connect = connection.dbconnection()
@@ -78,5 +82,31 @@ class Questions(Helper):
         return make_response(jsonify( {
                     "status": 404,
                     "msg": "Question with that ID not found"
+                }))
+
+    def upvote_question(self, question_id):
+        question = Helper.check_if_question_posted_exists(self, question_id)
+        query = "UPDATE questions SET votes = votes + 1 WHERE question_id = '{}';".format(question_id)
+        connect = connection.dbconnection()
+        cursor = connect.cursor()
+        cursor.execute(query)
+        connect.commit()
+        return make_response(jsonify({
+                "status": 200,
+                "msg": "Question",
+                "data": question
+                }))
+
+    def downvote_question(self, question_id):
+        question = Helper.check_if_question_posted_exists(self, question_id)
+        query = "UPDATE questions SET votes = votes - 1 WHERE question_id = '{}';".format(question_id)
+        connect = connection.dbconnection()
+        cursor = connect.cursor()
+        cursor.execute(query)
+        connect.commit()
+        return make_response(jsonify({
+                "status": 200,
+                "msg": "Question",
+                "data": question
                 }))
                 
