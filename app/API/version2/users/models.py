@@ -2,8 +2,6 @@
 import psycopg2
 from flask import request, jsonify
 
-
-from flask import current_app
 from app.API.utilities.database import connection
 
 
@@ -19,11 +17,11 @@ class Helper():
             cursor = connect.cursor()
             cursor.execute("SELECT * FROM users WHERE email = '{}'".format(email))
             connect.commit()
-            username = cursor.fetchone()
+            email = cursor.fetchone()
             cursor.close()
             connect.close()
-            if username:
-                return {'msg' : 'User already exists'}, 401
+            if email:
+                return True
         except (Exception, psycopg2.DatabaseError) as error:
             return {'error' : '{}'.format(error)}, 401
 

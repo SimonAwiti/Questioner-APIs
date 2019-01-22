@@ -16,8 +16,7 @@ meetups_table = """ CREATE TABLE IF NOT EXISTS meetups
                 createdOn DATE,
                 location VARCHAR (50) UNIQUE NOT NULL,
                 topic VARCHAR (50) UNIQUE NOT NULL,
-                happeningOn DATE,
-                user_id INT REFERENCES users(user_id) ON DELETE CASCADE
+                happeningOn DATE
         )"""
 
 questions_table = """ CREATE TABLE IF NOT EXISTS questions

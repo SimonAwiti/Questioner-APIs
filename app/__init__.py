@@ -12,6 +12,7 @@ from app.API.version1.views.rsvps_views import Rsvps, GetMeetupRsvp
 from app.API.version1.users.views import NewUsers, LoginUser
 from app.API.utilities.database.connection import initializedb
 from app.API.version2.users.views import RegisterUsers, LoginUsers
+from app.API.version2.meetups.views import NewMeetup, DeleteMeetups, GetOneMeetup
 
 def create_app(config_name):
     app = Flask(__name__, instance_relative_config=True)
@@ -57,6 +58,9 @@ def create_app(config_name):
     #version2 imports
     api_endpoint.add_resource(RegisterUsers, '/api/v2/users/auth/register')
     api_endpoint.add_resource(LoginUsers, '/api/v2/users/auth/login')
+    api_endpoint.add_resource(NewMeetup, '/api/v2/meetups')
+    api_endpoint.add_resource(DeleteMeetups, '/api/v2/meetups/<int:meetup_id>')
+    api_endpoint.add_resource(GetOneMeetup, '/api/v2/meetups/<int:meetup_id>')
 
     # Add CORS to handle Access-Control-Allow-Origin issues
     CORS(app)
