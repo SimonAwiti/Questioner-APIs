@@ -49,9 +49,9 @@ class Questions(Helper):
             response.status_code = 201
 
         except (Exception, psycopg2.DatabaseError) as error:
-            response = jsonify({'status': 400,
+            response = jsonify({'status': 500,
                                 'error':'A database error occured'})
-            response.status_code = 400
+            response.status_code = 500
             return response
 
     def get_all_questions(self):
