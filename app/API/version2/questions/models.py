@@ -23,9 +23,9 @@ class Questions(Helper):
         duplicate_question = Helper.check_if_similar_question_exists(self, title)
         if duplicate_question:
                         return{
-                                "status": 403,
+                                "status": 409,
                                 "error": "There is a question with the same content already posted"
-                            }, 403
+                            }, 409
         data = {
             "body":body,
             "title":  title,
