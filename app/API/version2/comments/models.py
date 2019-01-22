@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 from app.API.utilities.database import connection
 from app.API.version2.meetups.models import Helper
 
+<<<<<<< HEAD
 class Comments(Helper):
     """A class that handles all the comments operations"""
 
@@ -20,6 +21,14 @@ class Comments(Helper):
                     }))
         data = {
             "user_id": user_id,
+=======
+class Comments:
+    """A class that handles all the comments operations"""
+
+    def create_comment(self, question_id, title, comment):
+        """Method to create a comment"""
+        data = {
+>>>>>>> 9b0e536... [feature #163238802] updated models and table creation
             "question_id": question_id,
             "title": title,
             "comment": comment
