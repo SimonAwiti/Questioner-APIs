@@ -7,9 +7,8 @@ users_table = """CREATE TABLE IF NOT EXISTS users
                 othername VARCHAR(50),
                 email VARCHAR(50) NOT NULL UNIQUE,
                 password VARCHAR (50) NOT NULL,
-                confirm VARCHAR (50) NOT NULL,
                 registered TIMESTAMP DEFAULT NOW(),
-                admin BOOLEAN DEFAULT FALSE
+                isadmin BOOLEAN DEFAULT FALSE
         )"""
 
 meetups_table = """ CREATE TABLE IF NOT EXISTS meetups 
@@ -28,8 +27,9 @@ questions_table = """ CREATE TABLE IF NOT EXISTS questions
                 createdOn TIMESTAMP DEFAULT NOW(),  
                 createdBy INTEGER NOT NULL,
                 meetup_id INTEGER NOT NULL, 
+                user_id INTEGER NOT NULL,
                 title VARCHAR (50) NOT NULL,
-                body VARCHAR (70) NOT NULL,
+                body VARCHAR (300) NOT NULL,
                 FOREIGN KEY (meetup_id) REFERENCES meetups (meetup_id) ON DELETE CASCADE,
                 FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
                 votes integer DEFAULT 0
@@ -41,7 +41,7 @@ comments_table = """ CREATE TABLE IF NOT EXISTS comments
                 comment_id SERIAL PRIMARY KEY NOT NULL,
                 question_id INTEGER NOT NULL,
                 title VARCHAR (50) NOT NULL,
-                comment VARCHAR (50) NOT NULL,
+                comment VARCHAR (300) NOT NULL,
                 FOREIGN KEY (question_id) REFERENCES questions (question_id) ON DELETE CASCADE
         )"""
 
