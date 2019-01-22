@@ -1,7 +1,7 @@
 """handles all operations for creating and fetching data relating to questions"""
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from flask import request, jsonify, make_response, json
+from flask import request, jsonify, make_response
 from datetime import datetime, timedelta
 
 from app.API.utilities.database import connection
