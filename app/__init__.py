@@ -13,6 +13,7 @@ from app.API.version1.users.views import NewUsers, LoginUser
 from app.API.utilities.database.connection import initializedb
 from app.API.version2.users.views import RegisterUsers, LoginUsers
 from app.API.version2.meetups.views import NewMeetup, DeleteMeetups, GetOneMeetup
+from app.API.version2.questions.views import NewQuestions
 
 def create_app(config_name):
     app = Flask(__name__, instance_relative_config=True)
@@ -61,6 +62,7 @@ def create_app(config_name):
     api_endpoint.add_resource(NewMeetup, '/api/v2/meetups')
     api_endpoint.add_resource(DeleteMeetups, '/api/v2/meetups/<int:meetup_id>')
     api_endpoint.add_resource(GetOneMeetup, '/api/v2/meetups/<int:meetup_id>')
+    api_endpoint.add_resource(NewQuestions, '/api/v2/questions')
 
     # Add CORS to handle Access-Control-Allow-Origin issues
     CORS(app)
