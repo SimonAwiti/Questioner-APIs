@@ -29,3 +29,16 @@ class NewQuestions(Resource):
                 args['createdBy']
                 )
         return response
+
+    def get(self):
+        """Route to fetch all questions"""
+        return Questions().get_all_questions()
+
+class GetQuestions(Resource):
+    """
+    Class to handle fetching a specific question record
+    GET /api/v2/questions/<int:question_id> -> Fetches a specific question
+    """
+    def get(self, question_id):
+        """Route to fetch a specific question"""
+        return Questions().get_one_question(question_id)
