@@ -2,7 +2,7 @@
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from flask import request, jsonify, make_response
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta 
 
 from app.API.utilities.database import connection
 
@@ -22,13 +22,66 @@ class Helper():
             cursor.close()
             connect.close()
             if topic:
+                return topic
+        except (Exception, psycopg2.DatabaseError) as error:
+            return{
+                "status": 500,
+                "error": "An internal error occured"
+                }, 500
+
+    def check_if_meetup_id_exists(self, meetup_id):
+        """
+        Helper function to check if a meetup exists
+        Returns a true if a meetup already exists
+        """
+        connect = connection.dbconnection()
+        cursor = connect.cursor()
+        cursor.execute("SELECT * FROM meetups WHERE meetup_id=%(meetup_id)s",\
+            {"meetup_id":meetup_id})
+        meetup = cursor.fetchall()
+        if meetup:
+            return meetup
+        return False
+
+    def check_if_similar_question_exists(self, title):
+        """
+        Helper function to check if a similar question exists
+        Returns a message if a meetup already exists
+        """
+        try:
+            connect = connection.dbconnection()
+            cursor = connect.cursor()
+            cursor.execute("SELECT * FROM questions WHERE title = '{}'".format(title))
+            connect.commit()
+            title = cursor.fetchone()
+            cursor.close()
+            connect.close()
+            if title:
                 return True
         except (Exception, psycopg2.DatabaseError) as error:
-            return {'error' : '{}'.format(error)}, 401
+            return{
+                "status": 500,
+                "error": "An internal error occured"
+                }, 500
+
+    def check_if_question_exists(self, question_id):
+        """
+        Helper function to check if a question exists
+        Returns a true if a question already exists
+        """
+        connect = connection.dbconnection()
+        cursor = connect.cursor()
+        cursor.execute("SELECT * FROM questions WHERE question_id=%(question_id)s",\
+            {"question_id":question_id})
+        question = cursor.fetchall()
+        if question:
+            return question
+        return False
+
             
 class Meetups(Helper):
     """Class to handle meetups"""
-    def add_meetup(self, location, topic):
+    def add_meetup(self, location, topic ):
         """Method to handle user creation"""
 
         present = Helper.check_if_meetup_exists(self, topic)
@@ -39,10 +92,8 @@ class Meetups(Helper):
                 }, 401
 
         data = {
-            "createdOn":str(datetime.now()),
             "location":  location,
             "topic":  topic,
-            "happeningOn": str(datetime.now() + timedelta(days=10))
         }
 
         try:
@@ -55,16 +106,16 @@ class Meetups(Helper):
                         VALUES ('" + str(datetime.now()) +"', '" + location +"', '" + topic +"', '" + str(datetime.now() + timedelta(days=10)) +"')"
             connect = connection.dbconnection()
             cursor = connect.cursor()
-            cursor.execute(add_meetup, data)
+            cursor.execute(add_meetup)
             connect.commit()
             response = jsonify({'status': 201,
                                 "msg":'Meetup Successfully Created'})
             response.status_code = 201
             return response
         except (Exception, psycopg2.DatabaseError) as error:
-            response = jsonify({'status': 400,
+            response = jsonify({'status': 500,
                                 'error':'A database error occured'})
-            response.status_code = 400
+            response.status_code = 500
             return response
 
     def get_all_meetups(self):
@@ -73,32 +124,22 @@ class Meetups(Helper):
         cursor = connect.cursor()
         cursor.execute("SELECT * FROM meetups")
         meetups = cursor.fetchall()
-        all_meetups = []
-        for meetup in meetups:
-            info = {meetup[0]: { "meetup_id": meetup[1],
-                                 "createdOn": meetup[2],
-                                 "location": meetup[3],
-                                 "topic": meetup[4],
-                                 "happeningOn": meetup[4]}}
-            all_meetups.append(info)
         return make_response(jsonify({
                 "status": 200,
                 "msg": "All added meetups",
-                "data": all_meetups
+                "data": meetups
                 }))
 
     def delete_meetups(self, meetup_id):
-        connect = connection.dbconnection()
-        cursor = connect.cursor()
-        cursor.execute("SELECT * FROM meetups WHERE meetup_id=%(meetup_id)s",\
-            {"meetup_id":meetup_id})
-        meetup = cursor.fetchall()
+        meetup = Helper.check_if_meetup_id_exists(self, meetup_id)
         if meetup:
+            connect = connection.dbconnection()
+            cursor = connect.cursor()
             cursor.execute("DELETE FROM meetups WHERE meetup_id=%(meetup_id)s",\
                 {'meetup_id':meetup_id})
             connect.commit()
             return make_response(jsonify({
-                    "status": 202,
+                    "status": 200,
                     "msg": "Meetup succesfully deleted"
                 }))
         return make_response(jsonify({
@@ -108,11 +149,7 @@ class Meetups(Helper):
 
     def get_one_meetup(self, meetup_id):
         """Gets a particular meetup"""
-        connect = connection.dbconnection()
-        cursor = connect.cursor()
-        cursor.execute("SELECT * FROM meetups WHERE meetup_id=%(meetup_id)s",\
-            {"meetup_id":meetup_id})
-        meetup = cursor.fetchall()
+        meetup = Helper.check_if_meetup_id_exists(self, meetup_id)
         if meetup:
             return make_response(jsonify({
                     "status": 200,

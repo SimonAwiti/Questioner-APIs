@@ -1,41 +1,48 @@
 """creating tables for the database"""
 users_table = """CREATE TABLE IF NOT EXISTS users
             (
-                user_id serial PRIMARY KEY, 
-                firstname VARCHAR (50) UNIQUE NOT NULL,
-                lastname VARCHAR (50) UNIQUE NOT NULL,
-                email VARCHAR (50) UNIQUE NOT NULL,
-                password VARCHAR (50) UNIQUE NOT NULL,
-                confirm VARCHAR (50) UNIQUE NOT NULL,
-                admin BOOLEAN NOT NULL
+                user_id SERIAL PRIMARY KEY, 
+                firstname VARCHAR(50) NOT NULL,
+                lastname VARCHAR(50) UNIQUE NOT NULL,
+                othername VARCHAR(50),
+                email VARCHAR(50) NOT NULL UNIQUE,
+                password VARCHAR (50) NOT NULL,
+                registered TIMESTAMP DEFAULT NOW(),
+                isadmin BOOLEAN DEFAULT FALSE
         )"""
 
 meetups_table = """ CREATE TABLE IF NOT EXISTS meetups 
             (
-                meetup_id SERIAL PRIMARY KEY,
+                meetup_id SERIAL PRIMARY KEY NOT NULL,
                 createdOn DATE,
-                location VARCHAR (50) UNIQUE NOT NULL,
-                topic VARCHAR (50) UNIQUE NOT NULL,
+                location VARCHAR (50) NOT NULL,
+                topic VARCHAR (50) NOT NULL,
                 happeningOn DATE
+
         )"""
 
 questions_table = """ CREATE TABLE IF NOT EXISTS questions
             (
-                question_id SERIAL PRIMARY KEY,
-                createdOn DATE,  
-                createdBy INT REFERENCES users(user_id) ON DELETE CASCADE,
-                meetup_id INT REFERENCES meetups(meetup_id) ON DELETE CASCADE, 
-                title VARCHAR (50) UNIQUE NOT NULL,
-                body VARCHAR (70) UNIQUE NOT NULL,
-                votes INTEGER NOT NULL
+                question_id SERIAL PRIMARY KEY NOT NULL,
+                createdOn TIMESTAMP DEFAULT NOW(),  
+                createdBy INTEGER NOT NULL,
+                meetup_id INTEGER NOT NULL, 
+                user_id INTEGER NOT NULL,
+                title VARCHAR (50) NOT NULL,
+                body VARCHAR (300) NOT NULL,
+                FOREIGN KEY (meetup_id) REFERENCES meetups (meetup_id) ON DELETE CASCADE,
+                FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
+                votes integer DEFAULT 0
+
         )"""
 
 comments_table = """ CREATE TABLE IF NOT EXISTS comments 
            (
-                comment_id serial PRIMARY KEY,
-                question_id INT REFERENCES users(user_id) ON DELETE CASCADE,
-                title VARCHAR (50) UNIQUE NOT NULL,
-                comment VARCHAR (50) UNIQUE NOT NULL
+                comment_id SERIAL PRIMARY KEY NOT NULL,
+                question_id INTEGER NOT NULL,
+                title VARCHAR (50) NOT NULL,
+                comment VARCHAR (300) NOT NULL,
+                FOREIGN KEY (question_id) REFERENCES questions (question_id) ON DELETE CASCADE
         )"""
 
 queries = [users_table, meetups_table, questions_table, comments_table]

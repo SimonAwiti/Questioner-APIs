@@ -25,9 +25,9 @@ def initializedb():
         """Generate the default admin and add to db"""
         gen_admin = """
                 INSERT INTO
-                users (firstname, lastname, email, password, confirm, admin)
-                VALUES ('main', 'admin', 'admin12@gmail.com', 'passadmin', 'passadmin', true)
-                ON CONFLICT (lastname) DO NOTHING
+                users (firstname, lastname, email, password, isadmin)
+                VALUES ('mainadmin', 'admin', 'admin12@gmail.com', 'passadmin', true)
+                ON CONFLICT (email) DO NOTHING;
                 """
         connection = dbconnection()
         cursor = connection.cursor()
