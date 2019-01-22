@@ -30,7 +30,7 @@ questions_table = """ CREATE TABLE IF NOT EXISTS questions
                 title VARCHAR (50) NOT NULL,
                 body VARCHAR (300) NOT NULL,
                 FOREIGN KEY (meetup_id) REFERENCES meetups (meetup_id) ON DELETE CASCADE,
-                FOREIGN KEY (createdBy) REFERENCES users (user_id) ON DELETE CASCADE,
+                FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
                 votes integer DEFAULT 0
 
         )"""
