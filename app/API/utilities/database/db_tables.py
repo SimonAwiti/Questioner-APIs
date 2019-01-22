@@ -27,6 +27,7 @@ questions_table = """ CREATE TABLE IF NOT EXISTS questions
                 createdOn TIMESTAMP DEFAULT NOW(),  
                 user_id INTEGER NOT NULL,
                 meetup_id INTEGER NOT NULL, 
+                user_id INTEGER NOT NULL,
                 title VARCHAR (50) NOT NULL,
                 body VARCHAR (300) NOT NULL,
                 FOREIGN KEY (meetup_id) REFERENCES meetups (meetup_id) ON DELETE CASCADE,
