@@ -47,5 +47,3 @@ class GetOneMeetup(Resource):
     def get(self, meetup_id):
         """Route to fetch a specific meetup"""
         return Meetups().get_one_meetup(meetup_id)
-
-
