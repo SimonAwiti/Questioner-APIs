@@ -34,6 +34,7 @@ class NewQuestions(Resource):
         """Route to fetch all questions"""
         return Questions().get_all_questions()
 
+
 class GetQuestions(Resource):
     """
     Class to handle fetching a specific question record
@@ -43,3 +44,22 @@ class GetQuestions(Resource):
         """Route to fetch a specific question"""
         return Questions().get_one_question(question_id)
 
+class Upvotes(Resource):
+    """
+    Class to handle votting for a question
+    PATCH questions/<question-id>/upvote -> votes for a question
+    """
+
+    def patch(self, question_id):
+        """Upvote question method"""
+        return Questions().upvote_question(question_id)
+
+class Downvotes(Resource):
+    """
+    Class to handle votting for a question
+    PATCH questions/<question-id>/downvote -> votes for a question
+    """
+
+    def patch(self, question_id):
+        """Upvote question method"""
+        return Questions().downvote_question(question_id)
