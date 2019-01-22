@@ -24,7 +24,10 @@ class Helper():
             if topic:
                 return topic
         except (Exception, psycopg2.DatabaseError) as error:
-            return {'error' : '{}'.format(error)}, 401
+            return{
+                "status": 500,
+                "error": "An internal error occured"
+                }, 500
 
     def check_if_meetup_id_exists(self, meetup_id):
         """
@@ -56,7 +59,10 @@ class Helper():
             if title:
                 return True
         except (Exception, psycopg2.DatabaseError) as error:
-            return {'error' : '{}'.format(error)}, 401
+            return{
+                "status": 500,
+                "error": "An internal error occured"
+                }, 500
 
     def check_if_question_exists(self, question_id):
         """
@@ -75,7 +81,7 @@ class Helper():
             
 class Meetups(Helper):
     """Class to handle meetups"""
-    def add_meetup(self, location, topic):
+    def add_meetup(self, location, topic ):
         """Method to handle user creation"""
 
         present = Helper.check_if_meetup_exists(self, topic)
@@ -87,7 +93,7 @@ class Meetups(Helper):
 
         data = {
             "location":  location,
-            "topic":  topic
+            "topic":  topic,
         }
 
         try:
@@ -100,7 +106,7 @@ class Meetups(Helper):
                         VALUES ('" + str(datetime.now()) +"', '" + location +"', '" + topic +"', '" + str(datetime.now() + timedelta(days=10)) +"')"
             connect = connection.dbconnection()
             cursor = connect.cursor()
-            cursor.execute(add_meetup, data)
+            cursor.execute(add_meetup)
             connect.commit()
             response = jsonify({'status': 201,
                                 "msg":'Meetup Successfully Created'})
