@@ -3,6 +3,7 @@ from flask_restful import Resource, reqparse
 from flask import request
 
 from app.API.version2.comments.models import Comments
+from app.API.utilities.validator import validate_comments
 
 
 parser = reqparse.RequestParser(bundle_errors=True)
@@ -28,3 +29,4 @@ class NewQuestions(Resource):
                 args['comment']
                 )
         return response
+        
