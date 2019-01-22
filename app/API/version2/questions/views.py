@@ -42,3 +42,4 @@ class GetQuestions(Resource):
     def get(self, question_id):
         """Route to fetch a specific question"""
         return Questions().get_one_question(question_id)
+
