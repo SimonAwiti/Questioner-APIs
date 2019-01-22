@@ -22,7 +22,7 @@ class Helper():
             cursor.close()
             connect.close()
             if topic:
-                return True
+                return topic
         except (Exception, psycopg2.DatabaseError) as error:
             return {'error' : '{}'.format(error)}, 401
 
@@ -37,7 +37,7 @@ class Helper():
             {"meetup_id":meetup_id})
         meetup = cursor.fetchall()
         if meetup:
-            return True
+            return meetup
         return False
 
     def check_if_similar_question_exists(self, title):
