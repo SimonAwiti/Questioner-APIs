@@ -80,3 +80,17 @@ class Questions(Helper):
                     "msg": "Question with that ID not found"
                 }))
                 
+    def upvote(self, question_id):
+        """Method to upvote a question"""
+        question = Helper.check_if_question_exists(self, question_id)
+        if question:
+            question[0]["votes"] += 1
+            return {
+            "status": 200,
+            "data": question[0]
+        }, 200
+        return{
+                "status": 404,
+                "error": "Question record with that ID not found"
+                }, 404
+   
