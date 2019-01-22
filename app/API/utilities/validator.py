@@ -35,10 +35,10 @@ def validate_questions(args):
            args["createdBy"] == '':
             return {'error': 'Fields cannot be left empty'}, 401
         elif(args["body"]. isdigit()) or \
-            (args["title"]. isdigit()) or \
-            (args["createdBy"]. isdigit()):
+            (args["title"]. isdigit()):
                 return {"error":"The fields should be described in words"},401
-        elif(args["meetup_id"]. isalpha()):
+        elif(args["meetup_id"]. isalpha()) or \
+            (args["createdBy"]. isalpha()):
             return {"error":"The field should be an integer"},401
         else:
             return "valid"
