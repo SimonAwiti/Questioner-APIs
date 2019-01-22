@@ -30,7 +30,7 @@ questions_table = """ CREATE TABLE IF NOT EXISTS questions
                 title VARCHAR (50) NOT NULL,
                 body VARCHAR (300) NOT NULL,
                 FOREIGN KEY (meetup_id) REFERENCES meetups (meetup_id) ON DELETE CASCADE,
-                FOREIGN KEY (createdBy) REFERENCES users (user_id) ON DELETE CASCADE,
+                FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
                 votes integer DEFAULT 0
 
         )"""
@@ -38,10 +38,13 @@ questions_table = """ CREATE TABLE IF NOT EXISTS questions
 comments_table = """ CREATE TABLE IF NOT EXISTS comments 
            (
                 comment_id SERIAL PRIMARY KEY NOT NULL,
+                createdBy INTEGER NOT NULL,
                 question_id INTEGER NOT NULL,
                 title VARCHAR (50) NOT NULL,
                 comment VARCHAR (300) NOT NULL,
-                FOREIGN KEY (question_id) REFERENCES questions (question_id) ON DELETE CASCADE
+                createdOn TIMESTAMP DEFAULT NOW(), 
+                FOREIGN KEY (question_id) REFERENCES questions (question_id) ON DELETE CASCADE,
+                FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
         )"""
 
 queries = [users_table, meetups_table, questions_table, comments_table]
