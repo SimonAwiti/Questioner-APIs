@@ -25,6 +25,53 @@ class Helper():
                 return True
         except (Exception, psycopg2.DatabaseError) as error:
             return {'error' : '{}'.format(error)}, 401
+
+    def check_if_meetup_id_exists(self, meetup_id):
+        """
+        Helper function to check if a meetup exists
+        Returns a true if a meetup already exists
+        """
+        connect = connection.dbconnection()
+        cursor = connect.cursor()
+        cursor.execute("SELECT * FROM meetups WHERE meetup_id=%(meetup_id)s",\
+            {"meetup_id":meetup_id})
+        meetup = cursor.fetchall()
+        if meetup:
+            return True
+        return False
+
+    def check_if_similar_question_exists(self, title):
+        """
+        Helper function to check if a similar question exists
+        Returns a message if a meetup already exists
+        """
+        try:
+            connect = connection.dbconnection()
+            cursor = connect.cursor()
+            cursor.execute("SELECT * FROM questions WHERE title = '{}'".format(title))
+            connect.commit()
+            title = cursor.fetchone()
+            cursor.close()
+            connect.close()
+            if title:
+                return True
+        except (Exception, psycopg2.DatabaseError) as error:
+            return {'error' : '{}'.format(error)}, 401
+
+    def check_if_question_exists(self, question_id):
+        """
+        Helper function to check if a question exists
+        Returns a true if a question already exists
+        """
+        connect = connection.dbconnection()
+        cursor = connect.cursor()
+        cursor.execute("SELECT * FROM questions WHERE question_id=%(question_id)s",\
+            {"question_id":question_id})
+        question = cursor.fetchall()
+        if question:
+            return question
+        return False
+
             
 class Meetups(Helper):
     """Class to handle meetups"""
@@ -78,12 +125,10 @@ class Meetups(Helper):
                 }))
 
     def delete_meetups(self, meetup_id):
-        connect = connection.dbconnection()
-        cursor = connect.cursor()
-        cursor.execute("SELECT * FROM meetups WHERE meetup_id=%(meetup_id)s",\
-            {"meetup_id":meetup_id})
-        meetup = cursor.fetchall()
+        meetup = Helper.check_if_meetup_id_exists(self, meetup_id)
         if meetup:
+            connect = connection.dbconnection()
+            cursor = connect.cursor()
             cursor.execute("DELETE FROM meetups WHERE meetup_id=%(meetup_id)s",\
                 {'meetup_id':meetup_id})
             connect.commit()
@@ -98,11 +143,7 @@ class Meetups(Helper):
 
     def get_one_meetup(self, meetup_id):
         """Gets a particular meetup"""
-        connect = connection.dbconnection()
-        cursor = connect.cursor()
-        cursor.execute("SELECT * FROM meetups WHERE meetup_id=%(meetup_id)s",\
-            {"meetup_id":meetup_id})
-        meetup = cursor.fetchall()
+        meetup = Helper.check_if_meetup_id_exists(self, meetup_id)
         if meetup:
             return make_response(jsonify({
                     "status": 200,
