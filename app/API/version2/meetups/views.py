@@ -38,3 +38,12 @@ class DeleteMeetups(Resource):
     def delete(self, meetup_id):
         """Route to delete a meetup"""
         return Meetups.delete_meetups(self, meetup_id)
+
+class GetOneMeetup(Resource):
+    """
+    Class to handle fetching a specific meetup record
+    GET /api/v2/meetups/<int:meetup_id> -> Fetches a specific meetup 
+    """
+    def get(self, meetup_id):
+        """Route to fetch a specific meetup"""
+        return Meetups().get_one_meetup(meetup_id)
