@@ -100,9 +100,9 @@ class Meetups(Helper):
         present = Helper.check_if_meetup_exists(self, topic)
         if present:
             return{
-                "status": 401,
+                "status": 409,
                 "error": "There is a meetup with a similer topic"
-                }, 401
+                }, 409
 
         data = {
             "location":  location,
