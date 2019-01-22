@@ -1,12 +1,14 @@
 """handles all operations for creating and fetching data relating to questions"""
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from flask import request, jsonify, make_response
+from flask import request, jsonify, make_response, json
 from datetime import datetime, timedelta
 
 from app.API.utilities.database import connection
 from app.API.version2.meetups.models import Helper
-            
+
+
+
 class Questions(Helper):
     """Class to handle questions"""
     def create_question(self, body, title, meetup_id, createdBy):
@@ -54,6 +56,8 @@ class Questions(Helper):
             response.status_code = 500
             return response
 
+
+
     def get_all_questions(self):
         """Method to get all questions"""
         connect = connection.dbconnection()
@@ -79,18 +83,28 @@ class Questions(Helper):
                     "status": 404,
                     "msg": "Question with that ID not found"
                 }))
+
+    def upvote_question(self, question_id):
+        question = Helper.check_if_question_posted_exists(self, question_id)
+        query = "UPDATE questions SET votes = votes + 1 WHERE question_id = '{}';".format(question_id)
+        connect = connection.dbconnection()
+        cursor = connect.cursor()
+        cursor.execute(query)
+        return make_response(jsonify({
+                "status": 200,
+                "msg": "Question",
+                "data": question
+                }))
+
+    def downvote_question(self, question_id):
+        question = Helper.check_if_question_posted_exists(self, question_id)
+        query = "UPDATE questions SET votes = votes - 1 WHERE question_id = '{}';".format(question_id)
+        connect = connection.dbconnection()
+        cursor = connect.cursor()
+        cursor.execute(query)
+        return make_response(jsonify({
+                "status": 200,
+                "msg": "Question",
+                "data": question
+                }))
                 
-    def upvote(self, question_id):
-        """Method to upvote a question"""
-        question = Helper.check_if_question_exists(self, question_id)
-        if question:
-            question[0]["votes"] += 1
-            return {
-            "status": 200,
-            "data": question[0]
-        }, 200
-        return{
-                "status": 404,
-                "error": "Question record with that ID not found"
-                }, 404
-   
