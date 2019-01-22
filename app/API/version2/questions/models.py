@@ -90,6 +90,7 @@ class Questions(Helper):
         connect = connection.dbconnection()
         cursor = connect.cursor()
         cursor.execute(query)
+        connect.commit()
         return make_response(jsonify({
                 "status": 200,
                 "msg": "Question",
@@ -102,6 +103,7 @@ class Questions(Helper):
         connect = connection.dbconnection()
         cursor = connect.cursor()
         cursor.execute(query)
+        connect.commit()
         return make_response(jsonify({
                 "status": 200,
                 "msg": "Question",
