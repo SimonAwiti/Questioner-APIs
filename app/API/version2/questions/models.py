@@ -104,12 +104,9 @@ class Questions(Helper):
         cursor = connect.cursor()
         cursor.execute(query)
         connect.commit()
-<<<<<<< HEAD
         cursor.execute("SELECT * FROM questions WHERE question_id=%(question_id)s",\
             {"question_id":question_id})
         result = cursor.fetchone()
-=======
->>>>>>> c6d64fb... [feature #163388445]cleared extra whitespace
         return make_response(jsonify({
                 "status": 200,
                 "msg": "Question",
