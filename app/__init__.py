@@ -12,18 +12,12 @@ from app.API.version1.views.rsvps_views import Rsvps, GetMeetupRsvp
 from app.API.version1.users.views import NewUsers, LoginUser
 from app.API.utilities.database.connection import initializedb
 from app.API.version2.users.views import RegisterUsers, LoginUsers
-<<<<<<< HEAD
 from app.API.version2.meetups.views import NewMeetup, DeleteMeetups, GetOneMeetupWithQuestions
 from app.API.version2.questions.views import NewQuestions, GetQuestions, Upvotes, Downvotes, GetOneQuestionWithComments
 from app.API.version2.comments.views import NewComments
 from app.API.version2.rsvps.views import NewRsvps
 
 from app.API.version2.questions.views import NewQuestions, GetQuestions
-=======
-from app.API.version2.meetups.views import NewMeetup, DeleteMeetups, GetOneMeetup
-from app.API.version2.questions.views import NewQuestions, GetQuestions, Upvotes, Downvotes
-from app.API.version2.comments.views import NewComments
->>>>>>> 480e0ab... [feature #163238802] updated create app
 
 def create_app(config_name):
     app = Flask(__name__, instance_relative_config=True)
