@@ -60,7 +60,7 @@ class Questions(Helper):
             print(question)
             response = jsonify({'status': 201,
                                 "msg":'Question Successfully Posted',
-                                "data":Questions.json(question)})
+                                "data":self.quiz_json(question)})
             return response
             response.status_code = 201
 
@@ -81,17 +81,18 @@ class Questions(Helper):
         return make_response(jsonify({
                 "status": 200,
                 "msg": "All posted questions",
-                "data": [Questions.json(question) for question in questions]
+                "data": [self.quiz_json(question) for question in questions]
                 }))
 
     def get_one_question(self, question_id):
         """Gets a particular meetup"""
-        question = Helper.check_if_question_exists(self, question_id)
+        question = Helper.check_if_question_posted_exists(self, question_id)
         if question:
             return make_response(jsonify({
                     "status": 200,
                     "msg": "Question",
-                    "data": Questions.json(question)
+                    "data": self.quiz_json(question),
+                    "comments":[]
                 }))
         return make_response(jsonify( {
                     "status": 404,
@@ -119,7 +120,7 @@ class Questions(Helper):
         return make_response(jsonify({
                 "status": 200,
                 "msg": "Question",
-                "data": Questions.json(result)
+                "data":self.quiz_json(result)
                 }))
 
     def downvote_question(self, question_id):
@@ -142,6 +143,6 @@ class Questions(Helper):
         return make_response(jsonify({
                 "status": 200,
                 "msg": "Question",
-                "data": Questions.json(result)
+                "data": self.quiz_json(result)
                 }))
                 

@@ -7,7 +7,30 @@ from datetime import datetime, timedelta
 from app.API.utilities.database import connection
 
 class Helper():
+    @staticmethod
+    def quiz_json(data):
+        return dict(id=data[0],
+        createdOn=data[1],
+        body=data[5],
+        title=data[4],
+        meetup_id=data[3],
+        user_id=data[2],
+        votes=data[6]
+        )
+
     """Carries out common functions"""
+    def get_by_criteria(self, table, field, value):
+        try:
+            connect = connection.dbconnection()
+            cursor = connect.cursor()
+            cursor.execute("SELECT * FROM %s WHERE %s='%s'"%(
+                table, field, value
+            ))
+            result = cursor.fetchall()
+            cursor.close()
+            return result
+        except psycopg2.DatabaseError as err:
+            return dict(message="Some")
     def check_if_meetup_exists(self, topic):
         """
         Helper function to check if a meetup exists
@@ -18,11 +41,11 @@ class Helper():
             cursor = connect.cursor()
             cursor.execute("SELECT * FROM meetups WHERE topic = '{}'".format(topic))
             connect.commit()
-            topic = cursor.fetchone()
+            meetup = self.get_by_criteria("meetups", "topic", topic), #cursor.fetchone()
             cursor.close()
             connect.close()
-            if topic:
-                return topic
+            if meetup:
+                return meetup
         except (Exception, psycopg2.DatabaseError) as error:
             return{
                 "status": 500,
@@ -38,9 +61,9 @@ class Helper():
         cursor = connect.cursor()
         cursor.execute("SELECT * FROM meetups WHERE meetup_id=%(meetup_id)s",\
             {"meetup_id":meetup_id})
-        meetup = cursor.fetchone()
+        meetup = self.get_by_criteria("meetups", "meetup_id", meetup_id)
         if meetup:
-            return meetup
+            return meetup[0]
         return False
 
     def check_if_similar_question_exists(self, title):
@@ -180,4 +203,22 @@ class Meetups(Helper):
                     "status": 404,
                     "msg": "Meetup with that ID not found"
                 }))
+
+    def get_one_meetup_with_questions(self, meetup_id):
+        """Gets a particular meetup"""
+        meetup = Helper.check_if_meetup_id_exists(self, meetup_id)
+        questions = self.get_by_criteria("questions", "meetup_id", meetup_id)
+        print(questions)
+        if meetup:
+            return make_response(jsonify({
+                    "status": 200,
+                    "msg": "Meetup",
+                    "data": Meetups.json(meetup),
+                    "questions": [self.quiz_json(quiz) for quiz in questions]
+                }))
+        return make_response(jsonify( {
+                    "status": 404,
+                    "msg": "Meetup with that ID not found"
+                }))
+                
                 

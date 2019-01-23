@@ -21,7 +21,7 @@ class Comments(Helper):
 
     def create_comment(self, user_id, question_id, title, comment):
         """Method to create a comment"""
-        question = Helper.check_if_question_exists(self, question_id)
+        question = Helper.check_if_question_posted_exists(self, question_id)
         if not question:
             return make_response(jsonify( {
                         "status": 404,
