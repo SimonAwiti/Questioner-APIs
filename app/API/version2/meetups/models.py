@@ -145,6 +145,7 @@ class Meetups(Helper):
             response.status_code = 201
             return response
         except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
             response = jsonify({'status': 500,
                                 'error':'A database error occured'})
             response.status_code = 500
