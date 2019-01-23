@@ -11,8 +11,20 @@ from app.API.version2.meetups.models import Helper
 
 class Questions(Helper):
     """Class to handle questions"""
+    @staticmethod
+    def json(data):
+        return dict(id=data[0],
+        createdOn=data[1],
+        body=data[5],
+        title=data[4],
+        meetup_id=data[3],
+        user_id=data[2],
+        votes=data[6]
+        )
+
     def create_question(self, body, title, meetup_id, user_id):
         """Method that creates questions"""
+
         present = Helper.check_if_meetup_id_exists(self, meetup_id)
         if not present:
                         return{
@@ -40,17 +52,21 @@ class Questions(Helper):
                                 title,\
                                 meetup_id,\
                                 user_id) \
-                        VALUES ('" + body +"', '" + title +"', '" + meetup_id +"', '" + user_id +"')"
+                        VALUES ('" + body +"', '" + title +"', '" + meetup_id +"', '" + user_id +"') returning *"
             connect = connection.dbconnection()
             cursor = connect.cursor()
             cursor.execute(add_question, data)
             connect.commit()
+            question = cursor.fetchone()
+            print(question)
             response = jsonify({'status': 201,
-                                "msg":'Question Successfully Posted'})
+                                "msg":'Question Successfully Posted',
+                                "data":Questions.json(question)})
             return response
             response.status_code = 201
 
         except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
             response = jsonify({'status': 500,
                                 'error':'A database error occured'})
             response.status_code = 500
@@ -67,7 +83,7 @@ class Questions(Helper):
         return make_response(jsonify({
                 "status": 200,
                 "msg": "All posted questions",
-                "data": [questions]
+                "data": [Questions.json(question) for question in questions]
                 }))
 
     def get_one_question(self, question_id):
@@ -77,7 +93,7 @@ class Questions(Helper):
             return make_response(jsonify({
                     "status": 200,
                     "msg": "Question",
-                    "data": question
+                    "data": Questions.json(question)
                 }))
         return make_response(jsonify( {
                     "status": 404,
@@ -105,19 +121,29 @@ class Questions(Helper):
         return make_response(jsonify({
                 "status": 200,
                 "msg": "Question",
-                "data": result
+                "data": Questions.json(result)
                 }))
 
     def downvote_question(self, question_id):
-        question = Helper.check_if_question_posted_exists(self, question_id)
+        question = Helper.check_ques(self,question_id)
+        if not question:
+            return {"message": "That question does not exist"}, 404
+        user_id = question[3]
+        votes = question[6]
+        if user_id:
+            if votes > 0:
+                return {"Message": "you can't vote again"}
         query = "UPDATE questions SET votes = votes - 1 WHERE question_id = '{}';".format(question_id)
         connect = connection.dbconnection()
         cursor = connect.cursor()
         cursor.execute(query)
         connect.commit()
+        cursor.execute("SELECT * FROM questions WHERE question_id=%(question_id)s",\
+            {"question_id":question_id})
+        result = cursor.fetchone()
         return make_response(jsonify({
                 "status": 200,
                 "msg": "Question",
-                "data": question
+                "data": Questions.json(result)
                 }))
                 
