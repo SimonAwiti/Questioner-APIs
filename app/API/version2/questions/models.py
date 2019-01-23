@@ -21,7 +21,6 @@ class Questions(Helper):
         user_id=data[2],
         votes=data[6]
         )
-
     def create_question(self, body, title, meetup_id, user_id):
         """Method that creates questions"""
 
@@ -66,7 +65,6 @@ class Questions(Helper):
             response.status_code = 201
 
         except (Exception, psycopg2.DatabaseError) as error:
-            print(error)
             response = jsonify({'status': 500,
                                 'error':'A database error occured'})
             response.status_code = 500
