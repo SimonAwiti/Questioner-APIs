@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from app.API.utilities.database import connection
 from app.API.version2.meetups.models import Helper
 
-class Comments:
+class Comments(Helper):
     """A class that handles all the comments operations"""
     @staticmethod
     def json(data):
@@ -21,6 +21,13 @@ class Comments:
 
     def create_comment(self, user_id, question_id, title, comment):
         """Method to create a comment"""
+        question = Helper.check_if_question_exists(self, question_id)
+        if not question:
+            return make_response(jsonify( {
+                        "status": 404,
+                        "msg": "Question with that ID not found"
+                    }))
+
         data = {
             "user_id": user_id,
             "question_id": question_id,
