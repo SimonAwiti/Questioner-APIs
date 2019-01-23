@@ -76,9 +76,9 @@ class Users(Helper):
             response.status_code = 201
             return response
         except (Exception, psycopg2.DatabaseError) as error:
-            response = jsonify({'status': 400,
+            response = jsonify({'status': 500,
                                 'msg':'Problem fetching record from the database'})
-            response.status_code = 400
+            response.status_code = 500
             return response
 
     def login_user(self, email, password):
@@ -111,6 +111,7 @@ class Users(Helper):
             response.status_code = 401
             return response
         except (Exception, psycopg2.DatabaseError) as error:
-            response = jsonify({'msg':'Problem fetching record from the database'})
-            response.status_code = 400
+            response = jsonify({'status': 500,
+                                'msg':'Problem fetching record from the database'})
+            response.status_code = 500
             return response
