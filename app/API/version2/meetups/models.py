@@ -38,7 +38,7 @@ class Helper():
         cursor = connect.cursor()
         cursor.execute("SELECT * FROM meetups WHERE meetup_id=%(meetup_id)s",\
             {"meetup_id":meetup_id})
-        meetup = cursor.fetchall()
+        meetup = cursor.fetchone()
         if meetup:
             return meetup
         return False
@@ -105,6 +105,14 @@ class Helper():
             
 class Meetups(Helper):
     """Class to handle meetups"""
+    @staticmethod
+    def json(data):
+        return dict(id=data[0], 
+        created_on=data[1],
+        location=data[2],
+        title=data[3],
+        happening_on=data[4]
+        )
     def add_meetup(self, location, topic, happeningOn ):
         """Method to handle user creation"""
 
@@ -135,13 +143,15 @@ class Meetups(Helper):
                                 location,\
                                 topic,\
                                 happeningOn) \
-                        VALUES ('" + str(datetime.now()) +"', '" + location +"', '" + topic +"', '" + happeningOn +"')"
+                        VALUES ('" + str(datetime.now()) +"', '" + location +"', '" + topic +"', '" + happeningOn +"') returning *"
             connect = connection.dbconnection()
             cursor = connect.cursor()
             cursor.execute(add_meetup)
             connect.commit()
+            meetup = cursor.fetchone()
             response = jsonify({'status': 201,
-                                "msg":'Meetup Successfully Created'})
+                                "msg":'Meetup Successfully Created',
+                                "data": Meetups.json(meetup)})
             response.status_code = 201
             return response
         except (Exception, psycopg2.DatabaseError) as error:
@@ -160,7 +170,7 @@ class Meetups(Helper):
         return make_response(jsonify({
                 "status": 200,
                 "msg": "All added meetups",
-                "data": meetups
+                "data": [Meetups.json(meetup) for meetup in meetups]
                 }))
 
     def delete_meetups(self, meetup_id):
@@ -187,7 +197,7 @@ class Meetups(Helper):
             return make_response(jsonify({
                     "status": 200,
                     "msg": "Meetup",
-                    "data": meetup
+                    "data": Meetups.json(meetup)
                 }))
         return make_response(jsonify( {
                     "status": 404,
