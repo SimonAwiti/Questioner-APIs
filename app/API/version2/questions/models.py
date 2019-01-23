@@ -11,7 +11,7 @@ from app.API.version2.meetups.models import Helper
 
 class Questions(Helper):
     """Class to handle questions"""
-    def create_question(self, body, title, meetup_id, createdBy):
+    def create_question(self, body, title, meetup_id, user_id):
         """Method that creates questions"""
         present = Helper.check_if_meetup_id_exists(self, meetup_id)
         if not present:
@@ -30,7 +30,7 @@ class Questions(Helper):
             "body":body,
             "title":  title,
             "meetup_id":  meetup_id,
-            "createdBy": createdBy
+            "user_id": user_id
         }
 
         try:
@@ -39,8 +39,8 @@ class Questions(Helper):
                                 body,\
                                 title,\
                                 meetup_id,\
-                                createdBy) \
-                        VALUES ('" + body +"', '" + title +"', '" + meetup_id +"', '" + createdBy +"')"
+                                user_id) \
+                        VALUES ('" + body +"', '" + title +"', '" + meetup_id +"', '" + user_id +"')"
             connect = connection.dbconnection()
             cursor = connect.cursor()
             cursor.execute(add_question, data)
@@ -84,17 +84,28 @@ class Questions(Helper):
                     "msg": "Question with that ID not found"
                 }))
 
+     
     def upvote_question(self, question_id):
-        question = Helper.check_if_question_posted_exists(self, question_id)
+        question = Helper.check_ques(self,question_id)
+        if not question:
+            return {"message": "That question does not exist"}, 404
+        user_id = question[3]
+        votes = question[6]
+        if user_id:
+            if votes > 0:
+                return {"Message": "you can't vote again"}
         query = "UPDATE questions SET votes = votes + 1 WHERE question_id = '{}';".format(question_id)
         connect = connection.dbconnection()
         cursor = connect.cursor()
         cursor.execute(query)
         connect.commit()
+        cursor.execute("SELECT * FROM questions WHERE question_id=%(question_id)s",\
+            {"question_id":question_id})
+        result = cursor.fetchone()
         return make_response(jsonify({
                 "status": 200,
                 "msg": "Question",
-                "data": question
+                "data": result
                 }))
 
     def downvote_question(self, question_id):

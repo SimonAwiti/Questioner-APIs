@@ -91,6 +91,17 @@ class Helper():
         if question:
             return question
         return False
+
+    def check_ques(self, question_id):
+        """
+        Helper function to check if a question exists
+        Returns a true if a question already exists
+        """
+        connect = connection.dbconnection()
+        cursor = connect.cursor()
+        cursor.execute("SELECT * FROM questions WHERE question_id=%(question_id)s",\
+            {"question_id":question_id})
+        return cursor.fetchone()
             
 class Meetups(Helper):
     """Class to handle meetups"""
