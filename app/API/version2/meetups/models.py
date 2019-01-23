@@ -115,15 +115,6 @@ class Meetups(Helper):
         )
     def add_meetup(self, location, topic, happeningOn ):
         """Method to handle user creation"""
-
-        createddate = str(datetime.now())
-        if createddate < str(happeningOn):
-            return{
-                "status": 401,
-                "error": "Your happening date must be ahead of date of meetup posting"
-                }, 401
-
-
         present = Helper.check_if_meetup_exists(self, topic)
         if present:
             return{
