@@ -25,7 +25,7 @@ questions_table = """ CREATE TABLE IF NOT EXISTS questions
             (
                 question_id SERIAL PRIMARY KEY NOT NULL,
                 createdOn TIMESTAMP DEFAULT NOW(),  
-                createdBy INTEGER NOT NULL,
+                user_id INTEGER NOT NULL,
                 meetup_id INTEGER NOT NULL, 
                 title VARCHAR (50) NOT NULL,
                 body VARCHAR (300) NOT NULL,
@@ -38,7 +38,7 @@ questions_table = """ CREATE TABLE IF NOT EXISTS questions
 comments_table = """ CREATE TABLE IF NOT EXISTS comments 
            (
                 comment_id SERIAL PRIMARY KEY NOT NULL,
-                createdBy INTEGER NOT NULL,
+                user_id INTEGER NOT NULL,
                 question_id INTEGER NOT NULL,
                 title VARCHAR (50) NOT NULL,
                 comment VARCHAR (300) NOT NULL,
