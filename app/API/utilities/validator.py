@@ -1,18 +1,31 @@
+import re
+from datetime import datetime
+
 def validate_meetups(args):
     """validate meetup details"""
     try:
-        if args["location"] == '' or args["topic"] == '':
+        if any([(arg.strip() == '') for arg in args]):
             return{
                 "status": 401,
                 "error": "Fields cannot be left empty"
                 }, 401
-        elif( args["location"]. isdigit()) or ( args["topic"]. isdigit()) :
+        elif( args["location"].isdigit()) or ( args["topic"].isdigit()) :
             return{
                 "status": 401,
                 "error": "The fields should be described in words"
                 }, 401
-        else:
-            return "valid"
+        dates = args['happeningOn']
+        try:
+            happenning = datetime.strptime(dates, "%d/%m/%Y")
+        except ValueError as exception:
+            return {}
+        days = (happenning - datetime.utcnow()).days
+        if days < 0:
+            return{
+                "status": 401,
+                "error": "Your happening date must be ahead of date of meetup posting"
+                    }, 401
+        return"valid"
     except Exception as error:
         return{
                     "status": 401,
