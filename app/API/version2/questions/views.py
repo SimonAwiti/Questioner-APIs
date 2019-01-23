@@ -9,7 +9,7 @@ parser = reqparse.RequestParser(bundle_errors=True)
 parser.add_argument('body', help="You must briiefly describe the question", required='True')
 parser.add_argument('title', help="You must specify the title of your question", required='True')
 parser.add_argument('meetup_id', help="You must specify the meetup you are posting to", required='True')
-parser.add_argument('createdBy', help="You must give your name as the questioner", required='True')
+parser.add_argument('user_id', help="You must give your name as the questioner", required='True')
 
 class NewQuestions(Resource):
     """
@@ -26,7 +26,7 @@ class NewQuestions(Resource):
                 args['body'],
                 args['title'],
                 args['meetup_id'],
-                args['createdBy']
+                args['user_id']
                 )
         return response
 
