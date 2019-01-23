@@ -6,9 +6,9 @@ from app.API.version2.meetups.models import Meetups
 from app.API.utilities.validator import validate_meetups
 
 parser = reqparse.RequestParser(bundle_errors=True)
-parser.add_argument('location', help="You must specify the location of the meetup", required='True')
-parser.add_argument('topic', help="You must specify the topic of your meetup", required='True')
-parser.add_argument('happeningOn', help="You must specify the date of the meeting", required='True')
+parser.add_argument('location', help="You must specify the location of the meetup", required=True)
+parser.add_argument('topic', help="You must specify the topic of your meetup", required=True)
+parser.add_argument('happeningOn', help="You must specify the date of the meeting", required=True)
 
 
 class NewMeetup(Resource):
