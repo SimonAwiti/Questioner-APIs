@@ -59,9 +59,9 @@ class Users(Helper):
         present = Helper.check_if_user_exists(self, email)
         if present:
             return{
-                "status": 401,
-                "error": "There is a user with the same email"
-                }, 401
+                "status": 409,
+                "error": "There is a user with the same email registered"
+                }, 409
 
         try:
             add_user = "INSERT INTO \
