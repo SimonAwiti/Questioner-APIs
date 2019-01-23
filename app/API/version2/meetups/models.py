@@ -105,8 +105,16 @@ class Helper():
             
 class Meetups(Helper):
     """Class to handle meetups"""
-    def add_meetup(self, location, topic ):
+    def add_meetup(self, location, topic, happeningOn ):
         """Method to handle user creation"""
+
+        createddate = str(datetime.now())
+        if createddate < str(happeningOn):
+            return{
+                "status": 401,
+                "error": "Your happening date must be ahead of date of meetup posting"
+                }, 401
+
 
         present = Helper.check_if_meetup_exists(self, topic)
         if present:
@@ -127,7 +135,7 @@ class Meetups(Helper):
                                 location,\
                                 topic,\
                                 happeningOn) \
-                        VALUES ('" + str(datetime.now()) +"', '" + location +"', '" + topic +"', '" + str(datetime.now() + timedelta(days=10)) +"')"
+                        VALUES ('" + str(datetime.now()) +"', '" + location +"', '" + topic +"', '" + happeningOn +"')"
             connect = connection.dbconnection()
             cursor = connect.cursor()
             cursor.execute(add_meetup)
