@@ -21,6 +21,8 @@ def validate_rsvps(args):
                 return {"error":"The fields should be described in words"},401
         elif(args["meetup_id"]. isalpha()) or (args["user_id"]. isalpha()):
             return {"error":"The fields requiring id should be integers"},401
+        elif (args["response"] != "yes"):
+            return {"error":"The response should either be yes, no or maybe..."},401
         else:
             return "valid"
     except Exception as error:
