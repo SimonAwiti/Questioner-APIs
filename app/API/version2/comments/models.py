@@ -27,7 +27,6 @@ class Comments(Helper):
                         "status": 404,
                         "msg": "Question with that ID not found"
                     }))
-
         data = {
             "user_id": user_id,
             "question_id": question_id,
@@ -54,7 +53,6 @@ class Comments(Helper):
                                 "data": Comments.json(comment) })
             return response
         except (Exception, psycopg2.DatabaseError) as error:
-            print(error)
             response = jsonify({'status': 500,
                                 'error':'A database error occured'})
             response.status_code = 500
@@ -69,6 +67,5 @@ class Comments(Helper):
         return make_response(jsonify({
                 "status": 200,
                 "msg": "All posted comments",
-                "data": [Comments.json(comment) for comment in comments]
-                }))
-                
+                "data": [Comments.json(comment) for comment in comments]}))
+                       
