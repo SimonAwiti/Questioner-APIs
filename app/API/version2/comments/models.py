@@ -10,31 +10,46 @@ from app.API.version2.meetups.models import Helper
 class Comments:
     """A class that handles all the comments operations"""
 
-    def create_comment(self, question_id, title, comment):
+    def create_comment(self, user_id, question_id, title, comment):
         """Method to create a comment"""
         data = {
+            "user_id": user_id,
             "question_id": question_id,
             "title": title,
             "comment": comment
         }
         try:
-            comment_query = """INSERT INTO
-                        comments (question_id, title, comment)
-                        VALUES (%s, %s, %s)"""
+            add_comment = "INSERT INTO \
+                        comments (\
+                                user_id,\
+                                question_id,\
+                                title,\
+                                comment) \
+                        VALUES ('" + user_id +"', '" + question_id +"', '" + title +"', '" + comment +"')"
+
             connect = connection.dbconnection()
             cursor = connect.cursor()
-            cursor.execute(comment_query, data)
+            cursor.execute(add_comment, data)
             connect.commit()
              
-            response = cursor.fetchone()
-            return jsonify({
-                                'status': 201,
-                                'data':[{
-                                    'comment':response,
-                        }]
-                    }), 201
+            response = jsonify({'status': 201,
+                                "msg":'Comment Successfully Posted'})
+            return response
         except (Exception, psycopg2.DatabaseError) as error:
             response = jsonify({'status': 500,
                                 'error':'A database error occured'})
             response.status_code = 500
             return response
+
+    def get_all_comments(self):
+        """Method to get all comments"""
+        connect = connection.dbconnection()
+        cursor = connect.cursor()
+        cursor.execute("SELECT * FROM comments")
+        comments = cursor.fetchall()
+        return make_response(jsonify({
+                "status": 200,
+                "msg": "All posted comments",
+                "data": [comments]
+                }))
+                
