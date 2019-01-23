@@ -65,8 +65,8 @@ class Users(Helper):
 
         try:
             add_user = "INSERT INTO \
-                        users (firstname, lastname, email, password, confirm, admin) \
-                        VALUES ('" + firstname +"', '" + lastname +"', '" + email +"', '" + password +"', '" + confirm +"', false )"
+                        users (firstname, lastname, email, password, isadmin) \
+                        VALUES ('" + firstname +"', '" + lastname +"', '" + email +"', '" + password +"', false )"
             connect = connection.dbconnection()
             cursor = connect.cursor()
             cursor.execute(add_user)
@@ -94,7 +94,7 @@ class Users(Helper):
                 }, 401
 
         try:
-            get_user = "SELECT email, password, admin, user_id \
+            get_user = "SELECT email, password, isadmin, user_id \
                         FROM users \
                         WHERE email = '" + email + "' AND password = '" + password + "'"
             connect = connection.dbconnection()
