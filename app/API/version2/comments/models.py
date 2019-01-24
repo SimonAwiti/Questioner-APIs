@@ -9,15 +9,6 @@ from app.API.version2.meetups.models import Helper
 
 class Comments(Helper):
     """A class that handles all the comments operations"""
-    @staticmethod
-    def json(data):
-        return dict(id=data[0],
-        user_id=data[2],
-        question_id=data[1],
-        title=data[3],
-        comment=data[4],
-        createdOn=data[5]
-        )
 
     def create_comment(self, user_id, question_id, title, comment):
         """Method to create a comment"""
@@ -50,7 +41,7 @@ class Comments(Helper):
              
             response = jsonify({'status': 201,
                                 "msg":'Comment Successfully Posted',
-                                "data": Comments.json(comment) })
+                                "data": Helper.comment_json(comment) })
             return response
         except (Exception, psycopg2.DatabaseError) as error:
             response = jsonify({'status': 500,
@@ -67,5 +58,5 @@ class Comments(Helper):
         return make_response(jsonify({
                 "status": 200,
                 "msg": "All posted comments",
-                "data": [Comments.json(comment) for comment in comments]}))
+                "data": [Helper.comment_json(comment) for comment in comments]}))
                        
