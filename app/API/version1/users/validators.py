@@ -17,6 +17,8 @@ def validate_data_signup(args):
                     "status": 401,
                     "error": "Fields cannot be left empty"
                     }, 401
+
+
         elif not re.match(r'^(?=.*[a-z])(?=.*\d)(?=.*[A-Z])(?:.{8,})$', args["password"]):
             return{
                     "status": 401,
