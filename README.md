@@ -62,20 +62,19 @@
 * Install python then using pip instal .. install flask
 * clone the repo
 * From your terminal Ensure that the virtual environment is activated
+* From your terminal Ensure that the urls are entered according to the .env file
 * From the terminal locate the repo and run: python run.py
 
 # How to get started
 
-Start by making a directory where we will work on. Simply Open your terminal and then:
+
+Login into your github account and open the project folder then follow the instruction on how to clone the existing project. It should be something similar to:
 
 ```
-mkdir Questioner-APIs
+git clone https://github.com/SimonAwiti/Questioner-APIs.git
 ```
 
-Afterwhich we go into the directory:
-
-```
-cd Questioner-APIs
+Next, install the requirements by typing:
 ```
 
 ## Create a Python Virtual Environment for our Project
@@ -91,20 +90,7 @@ Before we install our project's Python requirements, we need to activate the vir
 ```
 source venv/bin/activate
 ```
-
-## Clone and Configure a Flask Project
-
-Login into your github account and open the project folder then follow the instruction on how to clone the existing project. It should be something similar to:
-
-```
-git clone https://github.com/SimonAwiti/Questioner-APIs.git
-```
-
-Next, install the requirements by typing:
-
-```
-pip install -r requirements.txt
-```
+Export all the environments settings and database URLs
 
 ## How to run the app
 
