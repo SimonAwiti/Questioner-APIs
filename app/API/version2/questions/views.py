@@ -32,6 +32,7 @@ class NewQuestions(Resource):
                 )
         return response
 
+    @jwt_required
     def get(self):
         """Route to fetch all questions"""
         return Questions().get_all_questions()
@@ -42,6 +43,7 @@ class GetQuestions(Resource):
     Class to handle fetching a specific question record
     GET /api/v2/questions/<int:question_id> -> Fetches a specific question
     """
+    @jwt_required
     def get(self, question_id):
         """Route to fetch a specific question"""
         return Questions().get_one_question(question_id)
@@ -51,7 +53,7 @@ class Upvotes(Resource):
     Class to handle votting for a question
     PATCH questions/<question-id>/upvote -> votes for a question
     """
-
+    @jwt_required
     def patch(self, question_id):
         """Upvote question method"""
         return Questions().upvote_question(question_id)
@@ -61,7 +63,7 @@ class Downvotes(Resource):
     Class to handle votting for a question
     PATCH questions/<question-id>/downvote -> votes for a question
     """
-
+    @jwt_required
     def patch(self, question_id):
         """Upvote question method"""
         return Questions().downvote_question(question_id)
@@ -71,6 +73,7 @@ class GetOneQuestionWithComments(Resource):
     Class to handle fetching a specific question with comments
     GET /api/v2/questions/<int:question_id>/comments -> Fetches a specific question
     """
+    @jwt_required
     def get(self, question_id):
         """Route to fetch a specific meetup"""
         return Questions().get_one_question_comments(question_id)
