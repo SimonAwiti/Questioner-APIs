@@ -1,12 +1,20 @@
 """handles all operations for creating and fetching data relating to users"""
 import psycopg2
-from flask import request, jsonify
+from flask import request, jsonify, make_response
+from flask_jwt_extended import create_access_token
+from psycopg2.extras import RealDictCursor
 
 from app.API.utilities.database import connection
 
 
 class Helper():
     """Carries out common functions"""
+
+    @staticmethod
+    def json(data):
+        return dict(email=data[4], firstname=data[1], lastname=data[2])
+
+
     def check_if_user_exists(self, email):
         """
         Helper function to check if a user exists
@@ -14,7 +22,7 @@ class Helper():
         """
         try:
             connect = connection.dbconnection()
-            cursor = connect.cursor()
+            cursor = connect.cursor(cursor_factory=RealDictCursor)
             cursor.execute("SELECT * FROM users WHERE email = '{}'".format(email))
             connect.commit()
             email = cursor.fetchone()
@@ -83,6 +91,8 @@ class Users(Helper):
 
     def login_user(self, email, password):
         """Logs in a user"""
+
+
         email = request.json.get('email', None)
         password = request.json.get('password', None)
 
@@ -98,12 +108,18 @@ class Users(Helper):
                         FROM users \
                         WHERE email = '" + email + "' AND password = '" + password + "'"
             connect = connection.dbconnection()
-            cursor = connect.cursor()
+            cursor = connect.cursor(cursor_factory=RealDictCursor)
             cursor.execute(get_user)
             row = cursor.fetchone()
             if row is not None:
-                response = jsonify({"status":200,
-                                    "msg":"User Successfully logged in"})
+                access_token = create_access_token(identity="email")
+                response = jsonify({
+                    "user":{
+                        'email':row['email']
+                        },
+                    "success":"User Successfully logged in", 
+                    "access_token":access_token})
+                print(response)
                 response.status_code = 200
                 return response
             response = jsonify({"status": 401,
@@ -111,6 +127,7 @@ class Users(Helper):
             response.status_code = 401
             return response
         except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
             response = jsonify({'status': 500,
                                 'msg':'Problem fetching record from the database'})
             response.status_code = 500
