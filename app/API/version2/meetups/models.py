@@ -74,7 +74,7 @@ class Helper():
         if meetup:
             return meetup
         return False
-        
+
     def check_if_similar_question_exists(self, title):
         """
         Helper function to check if a similar question exists
@@ -105,7 +105,7 @@ class Helper():
         cursor = connect.cursor()
         cursor.execute("SELECT * FROM questions WHERE question_id=%(question_id)s",\
             {"question_id":question_id})
-        question = cursor.fetchall()
+        question = cursor.fetchone()
         if question:
             return question
         return False
