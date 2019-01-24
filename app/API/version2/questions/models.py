@@ -11,16 +11,6 @@ from app.API.version2.meetups.models import Helper
 
 class Questions(Helper):
     """Class to handle questions"""
-    @staticmethod
-    def json(data):
-        return dict(id=data[0],
-        createdOn=data[1],
-        body=data[5],
-        title=data[4],
-        meetup_id=data[3],
-        user_id=data[2],
-        votes=data[6]
-        )
     def create_question(self, body, title, meetup_id, user_id):
         """Method that creates questions"""
 
@@ -146,3 +136,14 @@ class Questions(Helper):
                 "data": self.quiz_json(result)
                 }))
                 
+    def get_one_question_comments(self, question_id):
+        question = question = Helper.check_ques(self,question_id)
+        comments = self.get_by_criteria("comments", "question_id", question_id)
+        if question:
+            return make_response(jsonify({
+                        "status": 200,
+                        "msg": "question",
+                        "data": self.quiz_json(question),
+                        "comments": [Helper.comment_json(comments) for comment in comments]
+                 }))
+        
