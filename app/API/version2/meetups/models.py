@@ -165,7 +165,6 @@ class Meetups(Helper):
             response.status_code = 201
             return response
         except (Exception, psycopg2.DatabaseError) as error:
-            print(error)
             response = jsonify({'status': 500,
                                 'error':'A database error occured'})
             response.status_code = 500
@@ -218,7 +217,6 @@ class Meetups(Helper):
         """Gets a particular meetup"""
         meetup = Helper.check_if_meetup_id_exists(self, meetup_id)
         questions = self.get_by_criteria("questions", "meetup_id", meetup_id)
-        print(questions)
         if meetup:
             return make_response(jsonify({
                     "status": 200,
