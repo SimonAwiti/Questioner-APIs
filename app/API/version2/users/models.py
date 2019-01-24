@@ -116,7 +116,7 @@ class Users(Helper):
             row = cursor.fetchone()
             valid = check_password_hash(row.get('password'), password)
             if row is not None:
-                access_token = create_access_token(identity="email")
+                access_token = create_access_token(identity=row["email"])
                 response = jsonify({
                     "user":{
                         'email':row['email']
