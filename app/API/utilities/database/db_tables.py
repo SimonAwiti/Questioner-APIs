@@ -55,13 +55,15 @@ rsvps_table = """ CREATE TABLE IF NOT EXISTS rsvps
                 FOREIGN KEY (meetup_id) REFERENCES meetups (meetup_id) ON DELETE CASCADE,
                 FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
         )"""
-votes_table = """ CREATE TABLE IF NOT EXISTS votes 
-           (
-                user_id INTEGER NOT NULL,
+
+votes_table = """ CREATE TABLE IF NOT EXISTS votes(
+                vote_id serial PRIMARY KEY NOT NULL,
                 question_id INTEGER NOT NULL,
-                FOREIGN KEY (question_id) REFERENCES questions (question_id) ON DELETE CASCADE,
-                FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
+                user_id INTEGER NOT NULL,
+                FOREIGN KEY (question_id) REFERENCES questions(question_id) ON UPDATE CASCADE ON DELETE CASCADE,
+                FOREIGN KEY(voterId) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE
         )"""
+
 queries = [users_table, meetups_table, questions_table, comments_table, rsvps_table, votes_table]
 
 droppings = [
@@ -69,5 +71,6 @@ droppings = [
                 "DROP TABLE meetups CASCADE",
                 "DROP TABLE questions CASCADE",
                 "DROP TABLE comments CASCADE",
+                "DROP TABLE rsvps CASCADE",
                 "DROP TABLE rsvps CASCADE"
             ]
