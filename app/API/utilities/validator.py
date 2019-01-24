@@ -23,7 +23,7 @@ def validate_meetups(args):
         if days < 0:
             return{
                 "status": 401,
-                "error": "Your happening date must be ahead of date of meetup posting"
+                "error": "A meetup cannot be scheduled in the past."
                     }, 401
         return"valid"
     except Exception as error:
