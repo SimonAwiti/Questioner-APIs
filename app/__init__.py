@@ -12,11 +12,12 @@ from app.API.version1.views.rsvps_views import Rsvps, GetMeetupRsvp
 from app.API.version1.users.views import NewUsers, LoginUser
 from app.API.utilities.database.connection import initializedb
 from app.API.version2.users.views import RegisterUsers, LoginUsers
-from app.API.version2.meetups.views import NewMeetup, DeleteMeetups, GetOneMeetup
-from app.API.version2.questions.views import NewQuestions, GetQuestions, Upvotes, Downvotes
+from app.API.version2.meetups.views import NewMeetup, DeleteMeetups, GetOneMeetupWithQuestions
+from app.API.version2.questions.views import NewQuestions, GetQuestions, Upvotes, Downvotes, GetOneQuestionWithComments
 from app.API.version2.comments.views import NewComments
 from app.API.version2.rsvps.views import NewRsvps
 
+from app.API.version2.questions.views import NewQuestions, GetQuestions
 
 def create_app(config_name):
     app = Flask(__name__, instance_relative_config=True)
@@ -64,11 +65,12 @@ def create_app(config_name):
     api_endpoint.add_resource(LoginUsers, '/api/v2/users/auth/login')
     api_endpoint.add_resource(NewMeetup, '/api/v2/meetups')
     api_endpoint.add_resource(DeleteMeetups, '/api/v2/meetups/<int:meetup_id>')
-    api_endpoint.add_resource(GetOneMeetup, '/api/v2/meetups/<int:meetup_id>')
+    api_endpoint.add_resource(GetOneMeetupWithQuestions, '/api/v2/meetups/<int:meetup_id>/questions')
     api_endpoint.add_resource(NewQuestions, '/api/v2/questions')
     api_endpoint.add_resource(GetQuestions, '/api/v2/questions/<int:question_id>')
     api_endpoint.add_resource(Upvotes, '/v2/questions/<int:question_id>/upvote')
     api_endpoint.add_resource(Downvotes, '/v2/questions/<int:question_id>/downvote')
+    api_endpoint.add_resource(GetOneQuestionWithComments, '/api/v2/question/<int:question_id>/comments')
     api_endpoint.add_resource(NewComments, '/api/v2/comments')
     api_endpoint.add_resource(NewRsvps, '/api/v2/rsvps')
     

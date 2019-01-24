@@ -1,4 +1,4 @@
-"""Views for the Products Resource"""
+"""Views for the meetups Resource"""
 from flask_restful import Resource, reqparse
 from flask import request
 
@@ -6,8 +6,9 @@ from app.API.version2.meetups.models import Meetups
 from app.API.utilities.validator import validate_meetups
 
 parser = reqparse.RequestParser(bundle_errors=True)
-parser.add_argument('location', help="You must specify the location of the meetup", required='True')
-parser.add_argument('topic', help="You must specify the topic of your meetup", required='True')
+parser.add_argument('location', help="You must specify the location of the meetup", required=True)
+parser.add_argument('topic', help="You must specify the topic of your meetup", required=True)
+parser.add_argument('happeningOn', help="You must specify the date of the meeting", required=True)
 
 
 class NewMeetup(Resource):
@@ -23,7 +24,8 @@ class NewMeetup(Resource):
         if response == "valid":
             return Meetups().add_meetup(
                 args['location'],
-                args['topic'])
+                args['topic'],
+                args['happeningOn'])
         return response
 
     def get(self):
@@ -39,11 +41,11 @@ class DeleteMeetups(Resource):
         """Route to delete a meetup"""
         return Meetups.delete_meetups(self, meetup_id)
 
-class GetOneMeetup(Resource):
+class GetOneMeetupWithQuestions(Resource):
     """
     Class to handle fetching a specific meetup record
-    GET /api/v2/meetups/<int:meetup_id> -> Fetches a specific meetup 
+    GET /api/v2/meetups/<int:meetup_id>/questions -> Fetches a specific meetup 
     """
     def get(self, meetup_id):
         """Route to fetch a specific meetup"""
-        return Meetups().get_one_meetup(meetup_id)
+        return Meetups().get_one_meetup_with_questions(meetup_id)

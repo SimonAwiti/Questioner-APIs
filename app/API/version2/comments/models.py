@@ -7,11 +7,17 @@ from datetime import datetime, timedelta
 from app.API.utilities.database import connection
 from app.API.version2.meetups.models import Helper
 
-class Comments:
+class Comments(Helper):
     """A class that handles all the comments operations"""
 
     def create_comment(self, user_id, question_id, title, comment):
         """Method to create a comment"""
+        question = Helper.check_if_question_posted_exists(self, question_id)
+        if not question:
+            return make_response(jsonify( {
+                        "status": 404,
+                        "msg": "Question with that ID not found"
+                    }))
         data = {
             "user_id": user_id,
             "question_id": question_id,
@@ -25,15 +31,17 @@ class Comments:
                                 question_id,\
                                 title,\
                                 comment) \
-                        VALUES ('" + user_id +"', '" + question_id +"', '" + title +"', '" + comment +"')"
+                        VALUES ('" + user_id +"', '" + question_id +"', '" + title +"', '" + comment +"') returning *"
 
             connect = connection.dbconnection()
             cursor = connect.cursor()
             cursor.execute(add_comment, data)
             connect.commit()
+            comment = cursor.fetchone()
              
             response = jsonify({'status': 201,
-                                "msg":'Comment Successfully Posted'})
+                                "msg":'Comment Successfully Posted',
+                                "data": Helper.comment_json(comment) })
             return response
         except (Exception, psycopg2.DatabaseError) as error:
             response = jsonify({'status': 500,
@@ -50,6 +58,5 @@ class Comments:
         return make_response(jsonify({
                 "status": 200,
                 "msg": "All posted comments",
-                "data": [comments]
-                }))
-                
+                "data": [Helper.comment_json(comment) for comment in comments]}))
+                       
