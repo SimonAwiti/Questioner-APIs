@@ -41,7 +41,9 @@ class Helper():
             return result
         except psycopg2.DatabaseError as err:
             return dict(message="Some")
-    def check_if_meetup_exists(self, topic):
+
+
+    def check_if_meetup_exist(self, location, happeningOn):
         """
         Helper function to check if a meetup exists
         Returns a message if a meetup already exists
@@ -49,18 +51,15 @@ class Helper():
         try:
             connect = connection.dbconnection()
             cursor = connect.cursor()
-            cursor.execute("SELECT * FROM meetups WHERE topic = '{}'".format(topic))
+            cursor.execute("SELECT * FROM meetups WHERE location = '{}' and happeningOn = '{}'".format(location, happeningOn))
             connect.commit()
-            meetup = self.get_by_criteria("meetups", "topic", topic), #cursor.fetchone()
+            meetup = cursor.fetchone()
             cursor.close()
             connect.close()
             if meetup:
-                return meetup
+                return True
         except (Exception, psycopg2.DatabaseError) as error:
-            return{
-                "status": 500,
-                "error": "An internal error occured"
-                }, 500
+            return {'error' : '{}'.format(error)}, 401
 
     def check_if_meetup_id_exists(self, meetup_id):
         """
@@ -71,11 +70,11 @@ class Helper():
         cursor = connect.cursor()
         cursor.execute("SELECT * FROM meetups WHERE meetup_id=%(meetup_id)s",\
             {"meetup_id":meetup_id})
-        meetup = self.get_by_criteria("meetups", "meetup_id", meetup_id)
+        meetup = cursor.fetchall()
         if meetup:
-            return meetup[0]
+            return meetup
         return False
-
+        
     def check_if_similar_question_exists(self, title):
         """
         Helper function to check if a similar question exists
@@ -134,11 +133,12 @@ class Meetups(Helper):
         )
     def add_meetup(self, location, topic, happeningOn ):
         """Method to handle user creation"""
-        present = Helper.check_if_meetup_exists(self, topic)
+        present = Helper.check_if_meetup_exist(self, location, happeningOn)
+        print(present)
         if present:
             return{
                 "status": 409,
-                "error": "There is a meetup with a similer topic"
+                "error": "There is a clash on location and date of your meetup"
                 }, 409
 
         data = {
