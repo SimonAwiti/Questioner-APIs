@@ -1,6 +1,7 @@
 """Views for the question Resource"""
 from flask_restful import Resource, reqparse
 from flask import request
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app.API.version2.questions.models import Questions
 from app.API.utilities.validator import validate_questions
@@ -17,6 +18,7 @@ class NewQuestions(Resource):
     POST /api/v2/questions -> Creates a new question
     GET /api/v2/questions -> Gets all questions
     """
+    @jwt_required
     def post(self):
         """Route to handle creating a question"""
         args = parser.parse_args()
