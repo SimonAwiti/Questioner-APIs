@@ -1,12 +1,22 @@
 """handles all operations for creating and fetching data relating to users"""
 import psycopg2
-from flask import request, jsonify
+from flask import request, jsonify, make_response
+from flask_jwt_extended import create_access_token
+from psycopg2.extras import RealDictCursor
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 from app.API.utilities.database import connection
 
 
 class Helper():
     """Carries out common functions"""
+
+    @staticmethod
+    def json(data):
+        return dict(email=data[4], firstname=data[1], lastname=data[2])
+
+
     def check_if_user_exists(self, email):
         """
         Helper function to check if a user exists
@@ -14,7 +24,7 @@ class Helper():
         """
         try:
             connect = connection.dbconnection()
-            cursor = connect.cursor()
+            cursor = connect.cursor(cursor_factory=RealDictCursor)
             cursor.execute("SELECT * FROM users WHERE email = '{}'".format(email))
             connect.commit()
             email = cursor.fetchone()
@@ -24,7 +34,6 @@ class Helper():
                 return True
         except (Exception, psycopg2.DatabaseError) as error:
             return {'error' : '{}'.format(error)}, 401
-
 
 class Users(Helper):
     """Class to handle users"""
@@ -64,9 +73,10 @@ class Users(Helper):
                 }, 409
 
         try:
+            hashed_password = generate_password_hash(password)
             add_user = "INSERT INTO \
                         users (firstname, lastname, email, password, isadmin) \
-                        VALUES ('" + firstname +"', '" + lastname +"', '" + email +"', '" + password +"', false )"
+                        VALUES ('" + firstname +"', '" + lastname +"', '" + email +"', '" + hashed_password +"', false )"
             connect = connection.dbconnection()
             cursor = connect.cursor()
             cursor.execute(add_user)
@@ -76,6 +86,7 @@ class Users(Helper):
             response.status_code = 201
             return response
         except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
             response = jsonify({'status': 500,
                                 'msg':'Problem fetching record from the database'})
             response.status_code = 500
@@ -83,6 +94,8 @@ class Users(Helper):
 
     def login_user(self, email, password):
         """Logs in a user"""
+
+
         email = request.json.get('email', None)
         password = request.json.get('password', None)
 
@@ -96,14 +109,20 @@ class Users(Helper):
         try:
             get_user = "SELECT email, password, isadmin, user_id \
                         FROM users \
-                        WHERE email = '" + email + "' AND password = '" + password + "'"
+                        WHERE email = '" + email + "'" 
             connect = connection.dbconnection()
-            cursor = connect.cursor()
+            cursor = connect.cursor(cursor_factory=RealDictCursor)
             cursor.execute(get_user)
             row = cursor.fetchone()
+            valid = check_password_hash(row.get('password'), password)
             if row is not None:
-                response = jsonify({"status":200,
-                                    "msg":"User Successfully logged in"})
+                access_token = create_access_token(identity=row["email"])
+                response = jsonify({
+                    "user":{
+                        'email':row['email']
+                        },
+                    "success":"User Successfully logged in", 
+                    "access_token":access_token})
                 response.status_code = 200
                 return response
             response = jsonify({"status": 401,

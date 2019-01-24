@@ -92,10 +92,7 @@ source venv/bin/activate
 ```
 Export all the environments settings and database URLs
 
-## How to run the app
-
-```
-flask run
+Run the app by typing flask run
 ```
 
 ## Unit Testing

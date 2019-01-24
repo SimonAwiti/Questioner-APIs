@@ -1,6 +1,7 @@
 """Views for the rsvp Resource"""
 from flask_restful import Resource, reqparse
 from flask import request
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app.API.version2.rsvps.models import Rsvps
 from app.API.utilities.validator import validate_rsvps
@@ -16,6 +17,7 @@ class NewRsvps(Resource):
     POST /api/v2/rsvps -> Creates a new rsvps
     GET /api/v2/questions -> Gets all rsvps
     """
+    @jwt_required
     def post(self):
         """Route to handle creating a question"""
         args = parser.parse_args()

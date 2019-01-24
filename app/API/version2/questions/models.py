@@ -115,8 +115,8 @@ class Questions(Helper):
 
     def downvote_question(self, question_id):
         question = Helper.check_ques(self,question_id)
-        if not question:
-            return {"message": "That question does not exist"}, 404
+        #if not question:
+            #return {"message": "That question does not exist"}, 404
         user_id = question[3]
         votes = question[6]
         if user_id:
@@ -148,3 +148,7 @@ class Questions(Helper):
                         "comments": [Helper.comment_json(comments) for comment in comments]
                  }))
         
+        return make_response(jsonify( {
+                    "status": 404,
+                    "msg": "Question with that ID not found"
+                }))

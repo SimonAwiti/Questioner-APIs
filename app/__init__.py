@@ -3,6 +3,8 @@ import os
 from flask import Flask, redirect, jsonify
 from flask_restful import Api
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
+from datetime import datetime, timedelta
 
 # local import
 from instance.config import app_config
@@ -12,7 +14,7 @@ from app.API.version1.views.rsvps_views import Rsvps, GetMeetupRsvp
 from app.API.version1.users.views import NewUsers, LoginUser
 from app.API.utilities.database.connection import initializedb
 from app.API.version2.users.views import RegisterUsers, LoginUsers
-from app.API.version2.meetups.views import NewMeetup, DeleteMeetups, GetOneMeetupWithQuestions
+from app.API.version2.meetups.views import NewMeetup, DeleteMeetups, GetOneMeetupWithQuestions, GetOneMeetup
 from app.API.version2.questions.views import NewQuestions, GetQuestions, Upvotes, Downvotes, GetOneQuestionWithComments
 from app.API.version2.comments.views import NewComments
 from app.API.version2.rsvps.views import NewRsvps
@@ -64,6 +66,7 @@ def create_app(config_name):
     api_endpoint.add_resource(RegisterUsers, '/api/v2/users/auth/register')
     api_endpoint.add_resource(LoginUsers, '/api/v2/users/auth/login')
     api_endpoint.add_resource(NewMeetup, '/api/v2/meetups')
+    api_endpoint.add_resource(GetOneMeetup, '/api/v2/meetups')
     api_endpoint.add_resource(DeleteMeetups, '/api/v2/meetups/<int:meetup_id>')
     api_endpoint.add_resource(GetOneMeetupWithQuestions, '/api/v2/meetups/<int:meetup_id>/questions')
     api_endpoint.add_resource(NewQuestions, '/api/v2/questions')
@@ -79,6 +82,12 @@ def create_app(config_name):
     CORS(app)
 
     initializedb()
+
+    app.config['JWT_SECRET_KEY'] = os.getenv('SECRET_KEY')
+    #app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.datetime.utcnow() + datetime.timedelta(minutes=40)
+    jwt = JWTManager(app)
+
+
 
     @app.route('/')
     def root():
