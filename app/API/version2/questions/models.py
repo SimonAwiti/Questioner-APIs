@@ -41,7 +41,7 @@ class Questions(Helper):
                                 title,\
                                 meetup_id,\
                                 user_id) \
-                        VALUES ('" + body +"', '" + title +"', '" + meetup_id +"', '" + user_id +"') returning *"
+                        VALUES ('" + str(body) +"', '" + str(title) +"', '" + str(meetup_id) +"', '" + str(user_id) +"') returning *"
             connect = connection.dbconnection()
             cursor = connect.cursor()
             cursor.execute(add_question, data)
@@ -55,6 +55,7 @@ class Questions(Helper):
             response.status_code = 201
 
         except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
             response = jsonify({'status': 500,
                                 'error':'A database error occured'})
             response.status_code = 500
