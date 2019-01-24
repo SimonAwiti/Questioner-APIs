@@ -3,10 +3,10 @@ users_table = """CREATE TABLE IF NOT EXISTS users
             (
                 user_id SERIAL PRIMARY KEY, 
                 firstname VARCHAR(50) NOT NULL,
-                lastname VARCHAR(50) UNIQUE NOT NULL,
+                lastname VARCHAR(50) NOT NULL,
                 othername VARCHAR(50),
                 email VARCHAR(50) NOT NULL UNIQUE,
-                password VARCHAR (50) NOT NULL,
+                password VARCHAR (300) NOT NULL,
                 registered TIMESTAMP DEFAULT NOW(),
                 isadmin BOOLEAN DEFAULT FALSE
         )"""
