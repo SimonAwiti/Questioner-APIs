@@ -148,3 +148,7 @@ class Questions(Helper):
                         "comments": [Helper.comment_json(comments) for comment in comments]
                  }))
         
+        return make_response(jsonify( {
+                    "status": 404,
+                    "msg": "Question with that ID not found"
+                }))
