@@ -8,11 +8,11 @@ from app.API.version2.users.models import Users
 from app.API.version1.users.validators import validate_data_signup
 
 parser = reqparse.RequestParser(bundle_errors=True)
-parser.add_argument('firstname', help="You must supply your first name", required='True')
-parser.add_argument('lastname', help="You must supply your last name", required='True')
-parser.add_argument('email', help="You must supply your email", required='True')
-parser.add_argument('password', help="You must supply a password", required='True')
-parser.add_argument('confirm', help="You must supply a confirmation for your password", required='True')
+parser.add_argument('firstname', help="You must supply your first name", required=True)
+parser.add_argument('lastname', help="You must supply your last name", required=True)
+parser.add_argument('email', help="You must supply your email", required=True)
+parser.add_argument('password', help="You must supply a password", required=True)
+parser.add_argument('confirm', help="You must supply a confirmation for your password", required=True)
 
 class RegisterUsers(Resource):
     """
