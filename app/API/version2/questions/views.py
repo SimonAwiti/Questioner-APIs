@@ -63,3 +63,12 @@ class Downvotes(Resource):
     def patch(self, question_id):
         """Upvote question method"""
         return Questions().downvote_question(question_id)
+
+class GetOneQuestionWithComments(Resource):
+    """
+    Class to handle fetching a specific question with comments
+    GET /api/v2/questions/<int:question_id>/comments -> Fetches a specific question
+    """
+    def get(self, question_id):
+        """Route to fetch a specific meetup"""
+        return Questions().get_one_question_comments(question_id)
