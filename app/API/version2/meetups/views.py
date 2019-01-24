@@ -21,7 +21,7 @@ class NewMeetup(Resource):
     @jwt_required
     def post(self):
         """Route to handle creating meetup"""
-        if get_jwt_identity() != "admin12@gmail.com":
+        if get_jwt_identity().get("email") != "admin12@gmail.com":
             return{
                 "status": 403,
                 "message": "You are not authorized to create a meetup"
@@ -46,7 +46,7 @@ class DeleteMeetups(Resource):
     """
     @jwt_required
     def delete(self, meetup_id):
-        if get_jwt_identity() != "admin12@gmail.com":
+        if get_jwt_identity().get("email") != "admin12@gmail.com":
             return{
                 "status": 403,
                 "message": "You are not authorized to create a meetup"
