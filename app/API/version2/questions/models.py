@@ -97,8 +97,8 @@ class Questions(Helper):
         user_id = question[3]
         votes = question[6]
         if user_id:
-            if votes > 0:
-                return {"Message": "you can't vote again"}
+                return {"status": 403,
+                "Message": "you can't vote again"}
         query = "UPDATE questions SET votes = votes + 1 WHERE question_id = '{}';".format(question_id)
         connect = connection.dbconnection()
         cursor = connect.cursor()
@@ -121,7 +121,8 @@ class Questions(Helper):
         votes = question[6]
         if user_id:
             if votes > 0:
-                return {"Message": "you can't vote again"}
+                return {"status": 403,
+                "Message": "you can't vote again"}
         query = "UPDATE questions SET votes = votes - 1 WHERE question_id = '{}';".format(question_id)
         connect = connection.dbconnection()
         cursor = connect.cursor()
