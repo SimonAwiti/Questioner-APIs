@@ -4,6 +4,7 @@ from flask import request
 
 from app.API.version2.comments.models import Comments
 from app.API.utilities.validator import validate_comments
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
 parser = reqparse.RequestParser(bundle_errors=True)
@@ -19,6 +20,7 @@ class NewComments(Resource):
     POST /api/v2/questions -> Creates a new comment
     GET /api/v2/questions -> Gets all comments
     """
+    @jwt_required
     def post(self):
         """Route to handle creating a comment"""
         args = parser.parse_args()
@@ -32,7 +34,7 @@ class NewComments(Resource):
                 )
         return response
 
+    @jwt_required
     def get(self):
         """Route to fetch all comments"""
         return Comments().get_all_comments()
-        
