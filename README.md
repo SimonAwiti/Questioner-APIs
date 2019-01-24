@@ -29,6 +29,20 @@
 |PATCH /questions/<question-id>/downvote| Downvote a specific question|  /api/v1/questions/<questionid>/downvote             |
 | POST /users                   | User log in                      |  /api/v1/users/login          |
 | POST /users                   | User registration                |  /api/v1/users/register       |
+| POST / meetups                | Create a meetup record           |  /api/v2/meetups              |
+| GET / Meetups/ <meetupid>     | Get a specific meetup  record     |  /api/v2/meetups/<meetup-id> |
+| GET /meetups/upcoming         | Fetch all meetup records         |  /api/v2/meetups              |
+| GET /meetups/upcoming/questions  | Fetch all meetup records with questions        |  /api/v2/meetups/<meetupid>/questions      |
+ POST / questions              | Create a question record         |  /api/v2/questions         |
+ |PATCH /questions/<question-id>/upvote| Upvote a specific question| /api/v2/questions/<questionid> /upvote            |
+|PATCH /questions/<question-id>/downvote| Downvote a specific question|  /api/v2/questions/<questionid>/downvote             |
+| POST /users                   | User log in                      |  /api/v2/users/login          |
+| POST /users                   | User registration                |  /api/v2/users/register       |
+|POST /meetups/<meetup-id>/rsvps|Respond to meetup RSVP.           |  /api/v2/<meetupid>rspvs/   |
+| POST / comments                | Create a meetup record           |  /api/v1/comments/           |
+| POST / comments                | Create a meetup record           |  /api/v1/questions/<questionid>comments       |
+
+
 
 ## Testing the endpoints
 
