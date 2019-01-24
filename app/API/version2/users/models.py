@@ -114,22 +114,24 @@ class Users(Helper):
             cursor = connect.cursor(cursor_factory=RealDictCursor)
             cursor.execute(get_user)
             row = cursor.fetchone()
-            valid = check_password_hash(row.get('password'), password)
             if row is not None:
-                access_token = create_access_token(identity=row["email"])
-                response = jsonify({
-                    "user":{
-                        'email':row['email']
-                        },
-                    "success":"User Successfully logged in", 
-                    "access_token":access_token})
-                response.status_code = 200
-                return response
+                access_token = create_access_token(identity=dict(email=row["email"], id=row['user_id']))
+                valid = check_password_hash(row.get('password'), password)
+                if valid:
+                    response = jsonify({
+                        "user":{
+                            'email':row['email']
+                            },
+                        "success":"User Successfully logged in", 
+                        "access_token":access_token})
+                    response.status_code = 200
+                    return response
             response = jsonify({"status": 401,
                 "msg" : "Error logging in, credentials not found"})
             response.status_code = 401
             return response
         except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
             response = jsonify({'status': 500,
                                 'msg':'Problem fetching record from the database'})
             response.status_code = 500
