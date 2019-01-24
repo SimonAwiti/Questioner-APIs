@@ -16,6 +16,10 @@
 * Get all meetup records
 * Upvote or downvote a question.
 * Rsvp for a meetup.
+* comment on a question.
+* View all the questions for a specific meetup
+
+
 ## Here is a list of the functioning endpoints
 
 | EndPoint                      | Functionality                    |  Actual routes                |
