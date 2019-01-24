@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 
 from app.API.utilities.database import connection
 
+
 class Helper():
     @staticmethod
     def quiz_json(data):
@@ -15,7 +16,7 @@ class Helper():
         title=data[4],
         meetup_id=data[3],
         user_id=data[2],
-        votes=data[6]
+        votes=(Helper().votes("upvotes") - Helper().votes("downvotes"))
         )
 
     @staticmethod
@@ -120,6 +121,15 @@ class Helper():
         cursor.execute("SELECT * FROM questions WHERE question_id=%(question_id)s",\
             {"question_id":question_id})
         return cursor.fetchone()
+    def votes(self, table):
+        try:
+            conn = connection.dbconnection()
+            cursor = conn.cursor()
+            cursor.execute("SELECT count(*) as total from %s"%(table))
+            found = cursor.fetchone()
+            return found[0]
+        except (Exception, psycopg2.DatabaseError) as ex:
+            return 0
             
 class Meetups(Helper):
     """Class to handle meetups"""

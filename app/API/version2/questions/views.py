@@ -5,12 +5,12 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app.API.version2.questions.models import Questions
 from app.API.utilities.validator import validate_questions
+from app.API.version2.questions.votes import QuestionsVotes
 
 parser = reqparse.RequestParser(bundle_errors=True)
 parser.add_argument('body', help="You must briiefly describe the question", required='True')
 parser.add_argument('title', help="You must specify the title of your question", required='True')
 parser.add_argument('meetup_id', help="You must specify the meetup you are posting to", required='True')
-parser.add_argument('user_id', help="You must give your name as the questioner", required='True')
 
 class NewQuestions(Resource):
     """
@@ -28,7 +28,7 @@ class NewQuestions(Resource):
                 args['body'],
                 args['title'],
                 args['meetup_id'],
-                args['user_id']
+                get_jwt_identity().get("id")
                 )
         return response
 
@@ -56,7 +56,11 @@ class Upvotes(Resource):
     @jwt_required
     def patch(self, question_id):
         """Upvote question method"""
-        return Questions().upvote_question(question_id)
+        quiz = Questions().check_if_question_posted_exists(question_id)
+        if not quiz:
+            return dict(status=404, error="The question with id %d does not exist"%(question_id)), 404
+        voted = QuestionsVotes().upvote(question_id, get_jwt_identity().get("id"))
+        return voted
 
 class Downvotes(Resource):
     """
@@ -66,7 +70,11 @@ class Downvotes(Resource):
     @jwt_required
     def patch(self, question_id):
         """Upvote question method"""
-        return Questions().downvote_question(question_id)
+        quiz = Questions().check_if_question_posted_exists(question_id)
+        if not quiz:
+            return dict(status=404, error="The question with id %d does not exist"%(question_id)), 404
+        voted = QuestionsVotes().downvote(question_id, get_jwt_identity().get("id"))
+        return voted
 
 class GetOneQuestionWithComments(Resource):
     """
