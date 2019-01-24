@@ -93,6 +93,7 @@ source venv/bin/activate
 Export all the environments settings and database URLs
 
 Run the app by typing flask run
+'''
 
 ## Unit Testing
 To test the endpoints ensure that the following tools are available the follow steps below
