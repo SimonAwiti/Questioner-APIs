@@ -16,6 +16,10 @@
 * Get all meetup records
 * Upvote or downvote a question.
 * Rsvp for a meetup.
+* comment on a question.
+* View all the questions for a specific meetup
+
+
 ## Here is a list of the functioning endpoints
 
 | EndPoint                      | Functionality                    |  Actual routes                |
@@ -29,6 +33,20 @@
 |PATCH /questions/<question-id>/downvote| Downvote a specific question|  /api/v1/questions/<questionid>/downvote             |
 | POST /users                   | User log in                      |  /api/v1/users/login          |
 | POST /users                   | User registration                |  /api/v1/users/register       |
+| POST / meetups                | Create a meetup record           |  /api/v2/meetups              |
+| GET / Meetups/ <meetupid>     | Get a specific meetup  record     |  /api/v2/meetups/<meetup-id> |
+| GET /meetups/upcoming         | Fetch all meetup records         |  /api/v2/meetups              |
+| GET /meetups/upcoming/questions  | Fetch all meetup records with questions        |  /api/v2/meetups/<meetupid>/questions      |
+ POST / questions              | Create a question record         |  /api/v2/questions         |
+ |PATCH /questions/<question-id>/upvote| Upvote a specific question| /api/v2/questions/<questionid> /upvote            |
+|PATCH /questions/<question-id>/downvote| Downvote a specific question|  /api/v2/questions/<questionid>/downvote             |
+| POST /users                   | User log in                      |  /api/v2/users/login          |
+| POST /users                   | User registration                |  /api/v2/users/register       |
+|POST /meetups/<meetup-id>/rsvps|Respond to meetup RSVP.           |  /api/v2/<meetupid>rspvs/   |
+| POST / comments                | Create a meetup record           |  /api/v1/comments/           |
+| POST / comments                | Create a meetup record           |  /api/v1/questions/<questionid>comments       |
+
+
 
 ## Testing the endpoints
 
@@ -44,20 +62,19 @@
 * Install python then using pip instal .. install flask
 * clone the repo
 * From your terminal Ensure that the virtual environment is activated
+* From your terminal Ensure that the urls are entered according to the .env file
 * From the terminal locate the repo and run: python run.py
 
 # How to get started
 
-Start by making a directory where we will work on. Simply Open your terminal and then:
+
+Login into your github account and open the project folder then follow the instruction on how to clone the existing project. It should be something similar to:
 
 ```
-mkdir Questioner-APIs
+git clone https://github.com/SimonAwiti/Questioner-APIs.git
 ```
 
-Afterwhich we go into the directory:
-
-```
-cd Questioner-APIs
+Next, install the requirements by typing:
 ```
 
 ## Create a Python Virtual Environment for our Project
@@ -73,20 +90,7 @@ Before we install our project's Python requirements, we need to activate the vir
 ```
 source venv/bin/activate
 ```
-
-## Clone and Configure a Flask Project
-
-Login into your github account and open the project folder then follow the instruction on how to clone the existing project. It should be something similar to:
-
-```
-git clone https://github.com/SimonAwiti/Questioner-APIs.git
-```
-
-Next, install the requirements by typing:
-
-```
-pip install -r requirements.txt
-```
+Export all the environments settings and database URLs
 
 ## How to run the app
 
