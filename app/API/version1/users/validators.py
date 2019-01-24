@@ -3,10 +3,10 @@ import re
 def validate_data_signup(args):
     """validate user details"""
     try:
-        if " " in args["password"] or " " in args["email"]:
+        if " " in args["email"]:
             return{
                 "status": 401,
-                "error": "password and email should be one word, no spaces"
+                "error": "Email should be one word, no spaces"
                 }, 401
         elif args["firstname"] == '' or \
              args["lastname"] == '' or \
