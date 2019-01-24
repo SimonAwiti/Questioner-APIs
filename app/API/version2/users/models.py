@@ -3,6 +3,8 @@ import psycopg2
 from flask import request, jsonify, make_response
 from flask_jwt_extended import create_access_token
 from psycopg2.extras import RealDictCursor
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 from app.API.utilities.database import connection
 
@@ -32,7 +34,6 @@ class Helper():
                 return True
         except (Exception, psycopg2.DatabaseError) as error:
             return {'error' : '{}'.format(error)}, 401
-
 
 class Users(Helper):
     """Class to handle users"""
@@ -72,9 +73,10 @@ class Users(Helper):
                 }, 409
 
         try:
+            hashed_password = generate_password_hash(password)
             add_user = "INSERT INTO \
                         users (firstname, lastname, email, password, isadmin) \
-                        VALUES ('" + firstname +"', '" + lastname +"', '" + email +"', '" + password +"', false )"
+                        VALUES ('" + firstname +"', '" + lastname +"', '" + email +"', '" + hashed_password +"', false )"
             connect = connection.dbconnection()
             cursor = connect.cursor()
             cursor.execute(add_user)
@@ -84,6 +86,7 @@ class Users(Helper):
             response.status_code = 201
             return response
         except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
             response = jsonify({'status': 500,
                                 'msg':'Problem fetching record from the database'})
             response.status_code = 500
@@ -106,11 +109,12 @@ class Users(Helper):
         try:
             get_user = "SELECT email, password, isadmin, user_id \
                         FROM users \
-                        WHERE email = '" + email + "' AND password = '" + password + "'"
+                        WHERE email = '" + email + "'" 
             connect = connection.dbconnection()
             cursor = connect.cursor(cursor_factory=RealDictCursor)
             cursor.execute(get_user)
             row = cursor.fetchone()
+            valid = check_password_hash(row.get('password'), password)
             if row is not None:
                 access_token = create_access_token(identity="email")
                 response = jsonify({
@@ -119,7 +123,6 @@ class Users(Helper):
                         },
                     "success":"User Successfully logged in", 
                     "access_token":access_token})
-                print(response)
                 response.status_code = 200
                 return response
             response = jsonify({"status": 401,
@@ -127,7 +130,6 @@ class Users(Helper):
             response.status_code = 401
             return response
         except (Exception, psycopg2.DatabaseError) as error:
-            print(error)
             response = jsonify({'status': 500,
                                 'msg':'Problem fetching record from the database'})
             response.status_code = 500
