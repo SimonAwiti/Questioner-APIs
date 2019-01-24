@@ -18,6 +18,16 @@ class Helper():
         votes=data[6]
         )
 
+    @staticmethod
+    def comment_json(data):
+        return dict(id=data[0],
+        user_id=data[2],
+        question_id=data[1],
+        title=data[3],
+        comment=data[4],
+        createdOn=data[5]
+        )
+
     """Carries out common functions"""
     def get_by_criteria(self, table, field, value):
         try:
