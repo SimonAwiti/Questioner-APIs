@@ -116,7 +116,7 @@ class TestUsers(unittest.TestCase):
             content_type='application/json'
             )
         self.assertEqual(response.status_code, 401)
-        self.assertIn("Password should have atleast 5 characters", str(response.data))
+        self.assertIn("Error logging in, credentials not found", str(response.data))
 
     def test_add_user_with_unmatching_passwords(self):
         """Tests for adding a new user with unmatching password"""
