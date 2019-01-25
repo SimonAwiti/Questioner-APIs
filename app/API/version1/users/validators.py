@@ -1,5 +1,10 @@
 import re
 
+def valid_user_field(name):
+        """validate user field"""
+        regex = "^[a-zA-Z0-9]{3,}$"
+        return re.match(regex, str.strip(name))
+
 def validate_data_signup(args):
     """validate user details"""
     try:
@@ -8,17 +13,19 @@ def validate_data_signup(args):
                 "status": 401,
                 "error": "Email should be one word, no spaces"
                 }, 401
-        elif args["firstname"] == '' or \
-             args["lastname"] == '' or \
-             args["email"] == '' or \
-             args["password"] == '' or \
+        elif args["email"] == '' or \
+             args["password"] == '' or args["password"].isspace() or \
              args["confirm"] == '':
                 return{
                     "status": 401,
-                    "error": "Fields cannot be left empty"
+                    "error": "Check if password fields or email is empty"
                     }, 401
-
-
+        elif not valid_user_field(args["firstname"]) or \
+             not valid_user_field(args["lastname"]) :
+            return{
+                    "status": 401,
+                    "error": "Check if User names is empty or less than 3 letters or contains special characters"
+                    }, 401
         elif not re.match(r'^(?=.*[a-z])(?=.*\d)(?=.*[A-Z])(?:.{8,})$', args["password"]):
             return{
                     "status": 401,
@@ -57,3 +64,4 @@ def validate_data_signup(args):
                     "status": 401,
                     "error": "please provide all the fields, missing " + str(error)
                     }, 401
+                    
