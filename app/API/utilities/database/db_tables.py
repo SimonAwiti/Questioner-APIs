@@ -80,6 +80,6 @@ droppings = [
                 "DROP TABLE questions CASCADE",
                 "DROP TABLE comments CASCADE",
                 "DROP TABLE rsvps CASCADE",
-                "DROP TABLE upvotes CASCADE"
+                "DROP TABLE upvotes CASCADE",
                 "DROP TABLE downvotes CASCADE"
             ]

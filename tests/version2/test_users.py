@@ -49,6 +49,10 @@ class UserTestCase(unittest.TestCase):
         with self.app.app_context():
             connection.initializedb()
             
+    def create_user(self):
+        response = self.client().post('/api/v2/users/auth/register',
+                                      data=json.dumps(self.user),
+                                      content_type='application/json')
 
     def tearDown(self):
         """Drops all tables after tests are done"""
@@ -58,8 +62,8 @@ class UserTestCase(unittest.TestCase):
 
     def test_user_register(self):
         """Test to successfuly register a new user reg"""
-        response = self.client().post('/api/v2/auth/signup',
-                                      data=json.dumps(self.user2),
+        response = self.client().post('/api/v2/users/auth/register',
+                                      data=json.dumps(self.user),
                                       content_type='application/json')
         self.assertEqual(response.status_code, 201)
         self.assertIn('User Successfully Created', str(response.data))
@@ -67,7 +71,8 @@ class UserTestCase(unittest.TestCase):
 
     def test_user_login(self):
         """Successfully log into the app"""
-        response = self.client().post('/api/v2/auth/login',
+        self.create_user()
+        response = self.client().post('/api/v2/users/auth/login',
                                       data=json.dumps(self.user),
                                       content_type='application/json')
         self.assertEqual(response.status_code, 200)
@@ -85,12 +90,13 @@ class UserTestCase(unittest.TestCase):
 
     def test_add_user_who_exists(self):
         """Tests for adding a new user who exists"""
+        self.create_user()
         response = self.client().post(
             '/api/v2/users/auth/register', 
-            data=json.dumps(self.user3), 
+            data=json.dumps(self.user), 
             content_type='application/json'
             )
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 409)
         self.assertIn("There is a user with the same email registere", str(response.data))
 
     def test_add_user_with_poor_email(self):
@@ -107,10 +113,10 @@ class UserTestCase(unittest.TestCase):
         """Tests for adding a new user with diff password"""
         response = self.client().post(
             '/api/v2/users/auth/register', 
-            data=json.dumps(self.user4), 
+            data=json.dumps(self.user5), 
             content_type='application/json'
             )
         self.assertEqual(response.status_code, 401)
-        self.assertIn("The passwords do not match", str(response.data))
+        self.assertIn("Passwords do not match", str(response.data))
     
     

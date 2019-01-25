@@ -129,5 +129,3 @@ def validate_comments(args):
                     "error": "please provide all the fields, missing " + str(error)
                     }, 401
                     
-
-
