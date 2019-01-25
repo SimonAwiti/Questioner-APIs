@@ -91,7 +91,7 @@ def create_app(config_name):
 
     @app.route('/')
     def root():
-        return redirect('https://documenter.getpostman.com/view/5353857/RznHJxBh')
+        return redirect('https://app.apiary.io/questioner5/editor')
 
     return app
     
