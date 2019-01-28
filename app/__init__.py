@@ -84,7 +84,7 @@ def create_app(config_name):
     initializedb()
 
     app.config['JWT_SECRET_KEY'] = os.getenv('SECRET_KEY')
-    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.datetime.utcnow() + datetime.timedelta(minutes=40)
+    #app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.utcnow() + timedelta(minutes=60) 
     jwt = JWTManager(app)
 
 
