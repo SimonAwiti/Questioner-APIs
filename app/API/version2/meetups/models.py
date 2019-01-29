@@ -73,7 +73,7 @@ class Helper():
             {"meetup_id":meetup_id})
         meetup = cursor.fetchall()
         if meetup:
-            return meetup
+            return meetup[0]
         return False
 
     def check_if_similar_question_exists(self, title):

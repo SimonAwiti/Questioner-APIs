@@ -84,14 +84,14 @@ def create_app(config_name):
     initializedb()
 
     app.config['JWT_SECRET_KEY'] = os.getenv('SECRET_KEY')
-    #app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.datetime.utcnow() + datetime.timedelta(minutes=40)
+    #app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.utcnow() + timedelta(minutes=60) 
     jwt = JWTManager(app)
 
 
 
-    @app.route('/')
-    def root():
-        return redirect('https://documenter.getpostman.com/view/5353857/RznHJxBh')
+    #@app.route('/')
+    #def root():
+        #return redirect('https://app.apiary.io/questioner5/editor')
 
     return app
     

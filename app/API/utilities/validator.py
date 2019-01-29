@@ -1,10 +1,12 @@
 import re
 from datetime import datetime
 
+
 def validate_meetups(args):
     """validate meetup details"""
     try:
-        if any([(arg.strip() == '') for arg in args]):
+        if args["location"] == '' or args["location"].isspace() or \
+           args["topic"] == '' or args["topic"].isspace() :
             return{
                 "status": 401,
                 "error": "Fields cannot be left empty"
@@ -18,7 +20,9 @@ def validate_meetups(args):
         try:
             happenning = datetime.strptime(dates, "%d/%m/%Y")
         except ValueError as exception:
-            return {}
+            return {
+                "status": 401,
+                "error": "Incorrect data format, should be DD-MM-YYYY"},401
         days = (happenning - datetime.utcnow()).days
         if days < 0:
             return{
@@ -125,5 +129,3 @@ def validate_comments(args):
                     "error": "please provide all the fields, missing " + str(error)
                     }, 401
                     
-
-
